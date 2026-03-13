@@ -26,8 +26,10 @@ const TN = [
   '🌐 $211B in AI VC funding in 2025 — half of all global venture capital',
 ];
 const tEl = document.getElementById('tickerEl');
-const tS  = TN.map(n => `<span class="ticker-item">${n}</span>`).join('');
-tEl.innerHTML = tS + tS; // doubled for seamless loop
+if (tEl) {
+  const tS = TN.map(n => `<span class="ticker-item">${n}</span>`).join('');
+  tEl.innerHTML = tS + tS;
+}
 
 // ── Agent modal ───────────────────────────────────────────────────────────────
 function openAg(id) {
@@ -67,7 +69,7 @@ document.getElementById('agMod').addEventListener('click', function(e) { if (e.t
 
 function tryIt(n) {
   closeM();
-  document.querySelector('#playground').scrollIntoView({ behavior: 'smooth' });
+  document.querySelector('#playground')?.scrollIntoView({ behavior: 'smooth' });
   toast(`⚡ ${n} loaded in Playground`);
 }
 
@@ -75,7 +77,6 @@ function tryIt(n) {
 let wbL = [];
 
 function addN(nm, col) { wbL.push({ nm, col }); renderWB(); }
-
 function removeN(i) { wbL.splice(i, 1); renderWB(); }
 
 function renderWB() {
@@ -92,8 +93,8 @@ function renderWB() {
       ${n.nm}<div class="wbd" onclick="removeN(${i})">✕</div>
     </div>`
   ).join('');
-  s.textContent  = `${wbL.length} agent${wbL.length > 1 ? 's' : ''} in pipeline`;
-  s.style.color  = 'var(--muted)';
+  s.textContent = `${wbL.length} agent${wbL.length > 1 ? 's' : ''} in pipeline`;
+  s.style.color = 'var(--muted)';
 }
 
 function clearWB() { wbL = []; renderWB(); }
@@ -126,11 +127,92 @@ function loadTpl() {
   s.style.color = 'var(--acid)';
 }
 
-// ── Developer form ────────────────────────────────────────────────────────────
+// ── Developer form — INSTANT MARKETPLACE SUBMISSION ──────────────────────────
+const CAT_ICONS = {
+  'Writing AI': '✍️', 'Coding AI': '💻', 'Research AI': '🔬',
+  'Image Generation': '🎨', 'Video Creation': '🎬', 'Voice AI': '🎙️',
+  'Data Analysis': '📊', 'Business Automation': '⚡', 'Security AI': '🔐',
+  'Enterprise AI': '🏢'
+};
+const CAT_MAP = {
+  'Writing AI': 'writing', 'Coding AI': 'coding', 'Research AI': 'research',
+  'Image Generation': 'image', 'Video Creation': 'video', 'Voice AI': 'voice',
+  'Data Analysis': 'data', 'Business Automation': 'automation',
+  'Security AI': 'security', 'Enterprise AI': 'enterprise'
+};
+
 function submitDev() {
-  const n = document.querySelector('.fi').value;
-  if (!n.trim()) { toast('⚠️ Enter agent name'); return; }
-  toast('🚀 Agent submitted! Review within 24 hours.');
+  // Read all form fields
+  const fields   = document.querySelectorAll('.fi');
+  const selects  = document.querySelectorAll('.fse');
+  const textarea = document.querySelector('.fta');
+
+  const agentName  = fields[0]?.value.trim();
+  const agentDesc  = textarea?.value.trim();
+  const agentCat   = selects[0]?.value || 'Writing AI';
+  const agentDemo  = fields[1]?.value.trim();
+  const agentPrice = selects[1]?.value || 'Free';
+
+  // Validate
+  if (!agentName) { toast('⚠️ Please enter your agent name'); return; }
+  if (!agentDesc) { toast('⚠️ Please enter a description'); return; }
+
+  // Build new agent object
+  const newAgent = {
+    id     : AGENTS.length + 1,
+    name   : agentName,
+    desc   : agentDesc,
+    cat    : CAT_MAP[agentCat] || 'writing',
+    dev    : 'Community Developer',
+    rating : 5.0,
+    users  : '0',
+    price  : agentPrice.toLowerCase() === 'free' ? 'free' : 'paid',
+    api    : agentDemo ? true : false,
+    icon   : CAT_ICONS[agentCat] || '🤖',
+    color  : '#b4ff50',
+    tags   : [agentCat, agentPrice, '2026', 'New'],
+    nw     : true,
+  };
+
+  // Add to AGENTS array
+  AGENTS.unshift(newAgent); // Add at top of list
+
+  // Re-render marketplace cards
+  renderCards();
+
+  // Show success toast
+  toast(`🚀 "${agentName}" is now live in the Marketplace!`);
+
+  // Scroll to marketplace
+  setTimeout(() => {
+    document.querySelector('#market')?.scrollIntoView({ behavior: 'smooth' });
+  }, 800);
+
+  // Clear the form
+  if (fields[0]) fields[0].value = '';
+  if (textarea)  textarea.value  = '';
+  if (fields[1]) fields[1].value = '';
+
+  // Show confirmation popup in modal
+  const agMod = document.getElementById('agMod');
+  document.getElementById('agModC').innerHTML = `
+    <div style="text-align:center;padding:20px 0">
+      <div style="font-size:64px;margin-bottom:16px">🎉</div>
+      <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:900;margin-bottom:10px">Agent Published!</div>
+      <div style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px">
+        <strong style="color:var(--acid)">${agentName}</strong> is now live in the AI Galaxy Marketplace.<br>
+        Scroll up to see it at the top of the list!
+      </div>
+      <div style="background:rgba(180,255,80,0.06);border:1px solid rgba(180,255,80,0.2);border-radius:10px;padding:16px;font-size:13px;color:var(--muted);text-align:left;margin-bottom:20px">
+        <div style="margin-bottom:6px">✦ Category: <span style="color:var(--text);font-weight:700">${agentCat}</span></div>
+        <div style="margin-bottom:6px">✦ Pricing: <span style="color:var(--text);font-weight:700">${agentPrice}</span></div>
+        <div>✦ Status: <span style="color:var(--acid);font-weight:700">⚡ Live Now</span></div>
+      </div>
+      <button class="btn btn-primary" style="width:100%;padding:13px" onclick="closeM();document.querySelector('#market')?.scrollIntoView({behavior:'smooth'})">
+        View in Marketplace →
+      </button>
+    </div>`;
+  agMod.classList.add('open');
 }
 
 // ── Toast ─────────────────────────────────────────────────────────────────────
