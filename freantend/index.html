@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Galaxy — Discover AI Agents 2026</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor-dot" id="cd"></div>
+<div class="cursor-ring" id="cr"></div>
+
+<!-- ═══════════════════════════════════════════════════ NAV -->
+<nav>
+  <div class="logo">
+    <div class="logo-mark">✦</div>
+    <span class="logo-text">AI GALAXY</span>
+  </div>
+  <div class="nav-links">
+    <span class="nav-a active" onclick="goTo('#market')">Marketplace</span>
+    <span class="nav-a" onclick="goTo('#news')">News</span>
+    <span class="nav-a" onclick="goTo('#playground')">Playground</span>
+    <span class="nav-a" onclick="goTo('#compare')">Compare</span>
+    <span class="nav-a" onclick="goTo('#workflow')">Workflows</span>
+    <span class="nav-a" onclick="goTo('#developer')">Developers</span>
+  </div>
+  <div class="nav-right">
+    <button class="btn btn-ghost">Sign In</button>
+    <button class="btn btn-acid">Join Free →</button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════ TICKER -->
+<div class="ticker"><div class="ticker-inner" id="tickerEl"></div></div>
+
+<!-- ═══════════════════════════════════════════════════ HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span class="pulse-dot"></span> LIVE — 2,847 AI AGENTS · MARCH 2026</div>
+    <h1 class="ht">
+      <span class="w1">Discover</span>
+      <span class="w2">AI Galaxy</span>
+      <span class="w3">Agents Universe</span>
+    </h1>
+    <p class="hero-desc">The world's most complete AI agent discovery platform. <b style="color:var(--text)">62% of organizations</b> are already deploying AI agents. Find yours — powered by live 2026 data.</p>
+    <div class="ssearch">
+      <div class="ssearch-box">
+        <input type="text" id="heroQ" placeholder="Describe your goal... e.g. I want to grow my YouTube channel to 100K"/>
+        <button class="sbtn" onclick="runWF()">⚡ Get AI Agents</button>
+      </div>
+    </div>
+    <div class="hints" style="margin-bottom:0">
+      <span class="hint" onclick="fQ('build a SaaS app in 30 days')">🚀 Build SaaS</span>
+      <span class="hint" onclick="fQ('create viral social media content')">📱 Social Content</span>
+      <span class="hint" onclick="fQ('automate my customer support')">🤖 Support AI</span>
+      <span class="hint" onclick="fQ('write and publish a research paper')">🔬 Research</span>
+      <span class="hint" onclick="fQ('start a YouTube channel')">🎬 YouTube</span>
+    </div>
+    <div class="wf-res" id="wfRes">
+      <div id="wfLoading" style="display:none;text-align:center;padding:16px 0">
+        <div style="display:inline-flex;align-items:center;gap:10px;color:var(--acid);font-size:13px;font-weight:700;letter-spacing:1px">
+          <span class="cur"></span> AI AGENT IS SEARCHING...
+        </div>
+      </div>
+      <div id="wfContent" style="display:none">
+        <div class="wfl">✦ AI Galaxy — Live Agent Recommendations</div>
+        <div class="wfchain" id="wfChain"></div>
+        <div id="wfAIAnswer" style="margin-top:18px;font-size:13px;line-height:1.8;color:var(--muted);border-top:1px solid rgba(180,255,80,0.1);padding-top:16px"></div>
+        <div id="wfAgentCards" style="margin-top:16px;display:flex;flex-wrap:wrap;gap:10px"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ DATA STRIP -->
+<div class="data-strip">
+  <div class="con">
+    <div class="ds"><div class="n">$10.9<span class="u">B</span></div><div class="l">AI Agent Market 2026</div><div class="s">Gartner, 2026</div></div>
+    <div class="ds"><div class="n">62<span class="u">%</span></div><div class="l">Orgs Deploying AI Agents</div><div class="s">McKinsey State of AI</div></div>
+    <div class="ds"><div class="n">40<span class="u">%</span></div><div class="l">Enterprise Apps with AI</div><div class="s">Gartner Prediction EOY</div></div>
+    <div class="ds"><div class="n">49.6<span class="u">%</span></div><div class="l">Annual Market Growth</div><div class="s">DataCamp AI Report</div></div>
+    <div class="ds"><div class="n">2847<span class="u">+</span></div><div class="l">Agents on AI Galaxy</div><div class="s">Platform Data</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ MARKETPLACE -->
+<section class="sp" id="market">
+  <div class="con">
+    <div class="shs">
+      <div>
+        <div class="stag">✦ AI Galaxy Marketplace</div>
+        <h2 class="stitle">Top AI Agents<br><em>by Category</em></h2>
+        <p class="sdesc">Browse 18 verified 2026 AI agents. <span style="color:var(--acid);font-weight:700">⚡ AI-powered search active</span> — ask in plain English.</p>
+      </div>
+      <div style="text-align:right">
+        <div class="live-b"><div class="ld"></div> LIVE DATA</div>
+        <div style="font-size:28px;font-weight:800;color:var(--acid);margin-top:4px">2847</div>
+        <div style="font-size:11px;color:var(--muted)">agents indexed</div>
+      </div>
+    </div>
+    <!-- AI Marketplace Search -->
+    <div style="max-width:600px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;background:var(--panel);border:1.5px solid var(--border);border-radius:10px;padding:0 16px;transition:border-color 0.2s" id="mkSearchWrap">
+        <span style="color:var(--muted);font-size:16px;margin-right:10px">⌕</span>
+        <input type="text" id="mkS"
+          placeholder="Ask anything: 'best agent for content creation' or 'automate customer support'..."
+          oninput="filterCards(this.value)"
+          onkeydown="if(event.key==='Enter')runMkSearch()"
+          style="flex:1;background:none;border:none;outline:none;color:var(--text);font-size:14px;font-family:'Cabinet Grotesk',sans-serif;padding:13px 0"/>
+        <button onclick="runMkSearch()"
+          style="background:var(--acid);border:none;border-radius:7px;padding:8px 16px;color:#050508;font-size:12px;font-weight:800;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;white-space:nowrap;transition:all 0.2s;margin-left:8px"
+          onmouseover="this.style.background='var(--acid2)'" onmouseout="this.style.background='var(--acid)'">⚡ AI Search</button>
+      </div>
+      <div id="mkAIPanel" style="display:none;margin-top:10px;background:rgba(13,13,24,0.97);border:1px solid rgba(180,255,80,0.25);border-radius:10px;padding:20px 22px;animation:su 0.3s ease">
+        <div id="mkAILoading" style="display:none;text-align:center;padding:10px 0;color:var(--acid);font-size:12px;font-weight:700;letter-spacing:1px">
+          <span class="cur"></span>&nbsp; AI AGENT SEARCHING THE GALAXY...
+        </div>
+        <div id="mkAIResult"></div>
+      </div>
+    </div>
+    <div class="cats">
+      <div class="cat on" onclick="setCat('all',this)">All</div>
+      <div class="cat" onclick="setCat('writing',this)">✍️ Writing</div>
+      <div class="cat" onclick="setCat('coding',this)">💻 Coding</div>
+      <div class="cat" onclick="setCat('image',this)">🎨 Image</div>
+      <div class="cat" onclick="setCat('video',this)">🎬 Video</div>
+      <div class="cat" onclick="setCat('voice',this)">🎙️ Voice</div>
+      <div class="cat" onclick="setCat('research',this)">🔬 Research</div>
+      <div class="cat" onclick="setCat('data',this)">📊 Data</div>
+      <div class="cat" onclick="setCat('automation',this)">⚡ Automation</div>
+      <div class="cat" onclick="setCat('enterprise',this)">🏢 Enterprise</div>
+      <div class="cat" onclick="setCat('security',this)">🔐 Security</div>
+    </div>
+    <div class="agrid" id="agGrid"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ TRENDING -->
+<section style="padding:0 0 80px;position:relative;z-index:2">
+  <div class="con">
+    <div class="shs" style="margin-bottom:32px">
+      <div><div class="stag">🔥 This Week</div><h2 class="stitle" style="font-size:28px">Trending <em>Right Now</em></h2></div>
+      <button class="btn btn-ghost" style="font-size:12px" onclick="toast('Showing all trending agents...')">View All →</button>
+    </div>
+    <div class="tgrid" id="tGrid"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ LIVE NEWS -->
+<section class="sp" id="news" style="background:rgba(13,13,24,0.4)">
+  <div class="con">
+    <div class="shs">
+      <div>
+        <div class="stag">📡 Live Intelligence</div>
+        <h2 class="stitle">AI Galaxy <em>News Feed</em></h2>
+        <p class="sdesc">Real-time updates from the AI ecosystem — sourced from live 2026 market data.</p>
+      </div>
+      <div class="live-b"><div class="ld"></div> UPDATED HOURLY</div>
+    </div>
+    <div class="ng" id="nGrid"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ MARKET DATA -->
+<section class="sp">
+  <div class="con">
+    <div class="stag">📊 Market Intelligence</div>
+    <h2 class="stitle" style="margin-bottom:48px">2026 AI Agent <em>Market Data</em></h2>
+    <div class="si">
+      <div class="sb"><div class="big acid">$7.8B</div><div class="desc">Global AI agents market reached <b style="color:var(--text)">$7.8B in 2025</b> and is projected to exceed <b style="color:var(--acid)">$10.9B in 2026</b>. Growing at 49.6% CAGR through 2033.</div><div class="src">Source: Gartner / DataCamp AI Report 2026</div></div>
+      <div class="sb"><div class="big plasma">$211B</div><div class="desc">AI VC funding hit <b style="color:var(--text)">$211 billion in 2025</b> — fully half of all global venture capital. The SpaceX-xAI merger hit <b style="color:var(--plasma)">$1.25 trillion</b>.</div><div class="src">Source: Jon Radoff — State of AI Agents 2026</div></div>
+    </div>
+    <div class="sr">
+      <div class="ms"><div class="n">88%</div><div class="l">of orgs use AI in at least one business function (McKinsey)</div></div>
+      <div class="ms"><div class="n">40%</div><div class="l">of enterprise apps will embed AI agents by EOY 2026 (Gartner)</div></div>
+      <div class="ms"><div class="n">81%</div><div class="l">of tech experts optimistic AI will meet org goals this year (EY)</div></div>
+      <div class="ms"><div class="n">300+</div><div class="l">pre-built agents on Kore.ai marketplace alone</div></div>
+      <div class="ms"><div class="n">30 days</div><div class="l">Simplai PoC to production deployment time</div></div>
+      <div class="ms"><div class="n">25%</div><div class="l">finance cost reduction target by Deloitte's Zora AI agent</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ PLAYGROUND -->
+<section class="sp" id="playground" style="background:rgba(13,13,24,0.4)">
+  <div class="con">
+    <div class="shs">
+      <div><div class="stag">⚡ Test Before You Commit</div><h2 class="stitle">AI Agent <em>Playground</em></h2><p class="sdesc">Test real agent behaviors. No signup required.</p></div>
+    </div>
+    <div class="pgw">
+      <div class="pgs">
+        <h3>Select AI Agent</h3>
+        <p style="font-size:11px;color:var(--muted);margin-bottom:16px;line-height:1.5">Real Claude API — every response is live-generated, never pre-written</p>
+        <div class="abtns" id="abtns">
+          <div class="abtn on"  onclick="pickAg(this,'writing')"    ><div class="dot" style="background:#b4ff50"></div>✍️ Writing AI</div>
+          <div class="abtn"     onclick="pickAg(this,'essay')"      ><div class="dot" style="background:#b4ff50"></div>📝 Essay Writer</div>
+          <div class="abtn"     onclick="pickAg(this,'coding')"     ><div class="dot" style="background:#00f5d4"></div>💻 Coding AI</div>
+          <div class="abtn"     onclick="pickAg(this,'research')"   ><div class="dot" style="background:#8b5cf6"></div>🔬 Research AI</div>
+          <div class="abtn"     onclick="pickAg(this,'education')"  ><div class="dot" style="background:#b4ff50"></div>🎓 Education AI</div>
+          <div class="abtn"     onclick="pickAg(this,'healthcare')" ><div class="dot" style="background:#ff3366"></div>🏥 Healthcare AI</div>
+          <div class="abtn"     onclick="pickAg(this,'finance')"    ><div class="dot" style="background:#00f5d4"></div>💹 Finance AI</div>
+          <div class="abtn"     onclick="pickAg(this,'legal')"      ><div class="dot" style="background:#8b5cf6"></div>⚖️ Legal AI</div>
+          <div class="abtn"     onclick="pickAg(this,'marketing')"  ><div class="dot" style="background:#ff6b1a"></div>📢 Marketing AI</div>
+          <div class="abtn"     onclick="pickAg(this,'automation')" ><div class="dot" style="background:#ff6b1a"></div>🤖 Automation AI</div>
+          <div class="abtn"     onclick="pickAg(this,'data')"       ><div class="dot" style="background:#ff3366"></div>📊 Data Analyst</div>
+          <div class="abtn"     onclick="pickAg(this,'security')"   ><div class="dot" style="background:#ff3366"></div>🔐 Security AI</div>
+        </div>
+        <div id="pgAgentBadge" style="margin-top:16px;padding:10px 12px;border-radius:8px;background:rgba(180,255,80,0.06);border:1px solid rgba(180,255,80,0.15);font-size:11px;color:var(--muted);line-height:1.6">
+          <span style="color:var(--acid);font-weight:800">Writing AI</span><br>Crafts posts, articles, essays and creative content for any topic or goal.
+        </div>
+      </div>
+      <div class="pgm">
+        <textarea class="pgi" id="pgIn" placeholder="Type any prompt — e.g.&#10;• Write an essay on APJ Abdul Kalam&#10;• Explain blockchain to a 10-year-old&#10;• Analyze this marketing strategy&#10;• Debug my React component&#10;• Summarize AI trends in healthcare 2026"></textarea>
+        <button class="pgr" id="pgRunBtn" onclick="runPG()">⚡ Run Real AI Agent</button>
+        <div class="pgo">
+          <div class="pgol" style="display:flex;align-items:center;justify-content:space-between">
+            <span id="pgAgentLabel">✍️ WRITING AI — LIVE OUTPUT</span>
+            <span id="pgTokens" style="font-size:10px;color:var(--muted)"></span>
+          </div>
+          <div id="pgOut" style="color:var(--muted);white-space:pre-wrap;font-size:13px;line-height:1.8">Your real AI-generated result streams here. Every response is unique — powered by Claude API.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ COMPARE -->
+<section class="sp" id="compare">
+  <div class="con">
+    <div class="stag">⚡ Side-by-Side Analysis</div>
+    <h2 class="stitle" style="margin-bottom:48px">Agent <em>Comparison</em> <span class="pl">Matrix</span></h2>
+    <div style="overflow-x:auto">
+      <table class="ctbl">
+        <thead>
+          <tr>
+            <th style="width:160px">Capability</th>
+            <th><div class="acol"><span class="em">🤖</span><span class="nm">ChatGPT</span></div></th>
+            <th><div class="acol"><span class="em">🧿</span><span class="nm">Claude 4</span></div></th>
+            <th><div class="acol"><span class="em">💎</span><span class="nm">Gemini 2</span></div></th>
+            <th><div class="acol"><span class="em">🐙</span><span class="nm">Copilot</span></div></th>
+            <th><div class="acol"><span class="em">🔍</span><span class="nm">Perplexity</span></div></th>
+            <th><div class="acol"><span class="em">⚡</span><span class="nm">AutoGPT</span></div></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Text &amp; Writing</td> <td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="part">Limited</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>Code Generation</td>   <td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>Image Generation</td>  <td><span class="part">DALL-E 3</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td></tr>
+          <tr><td>Web Browsing</td>      <td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>Autonomous Tasks</td>  <td><span class="part">Limited</span></td><td><span class="part">Limited</span></td><td><span class="part">Limited</span></td><td><span class="part">Limited</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>Context Window</td>    <td><span class="part">128K</span></td><td><span class="yes">200K</span></td><td><span class="yes">1M</span></td><td><span class="part">128K</span></td><td><span class="part">32K</span></td><td><span class="part">32K</span></td></tr>
+          <tr><td>API Access</td>        <td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="part">Limited</span></td><td><span class="yes">✓</span></td><td><span class="yes">Open Source</span></td></tr>
+          <tr><td>Free Tier</td>         <td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>MCP Support</td>       <td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="part">Partial</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>Self-Healing</td>      <td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="part">Beta</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ WORKFLOW BUILDER -->
+<section class="sp" id="workflow" style="background:rgba(13,13,24,0.4)">
+  <div class="con">
+    <div class="stag">🔗 Multi-Agent Orchestration</div>
+    <h2 class="stitle" style="margin-bottom:12px">AI Workflow <em>Builder</em></h2>
+    <p class="sdesc" style="margin-bottom:48px">Chain agents into powerful pipelines. Inspired by real 2026 enterprise deployments.</p>
+    <div class="wba">
+      <div class="wbt-row">
+        <div class="wbt" onclick="addN('📝 Script Writer','#b4ff50')">+ Script Writer</div>
+        <div class="wbt" onclick="addN('🔍 Research AI','#00f5d4')">+ Research AI</div>
+        <div class="wbt" onclick="addN('💻 Code Agent','#8b5cf6')">+ Code Agent</div>
+        <div class="wbt" onclick="addN('🎨 Image Gen','#ff6b1a')">+ Image Gen</div>
+        <div class="wbt" onclick="addN('🎬 Video Creator','#ff3366')">+ Video</div>
+        <div class="wbt" onclick="addN('🎙️ Voice AI','#b4ff50')">+ Voice AI</div>
+        <div class="wbt" onclick="addN('📊 Data Analyst','#00f5d4')">+ Data</div>
+        <div class="wbt" onclick="addN('📱 Social AI','#8b5cf6')">+ Social AI</div>
+        <div class="wbt" onclick="addN('🔐 Security Agent','#ff3366')">+ Security</div>
+        <div class="wbt" onclick="addN('🤖 Orchestrator','#b4ff50')">+ Orchestrator</div>
+        <div class="wbt" style="margin-left:auto;color:var(--red);border-color:rgba(255,51,102,0.2)" onclick="clearWB()">✕ Clear</div>
+      </div>
+      <div class="wbc" id="wbC"><div class="wbe">Click agent types above to build your AI workflow pipeline</div></div>
+      <div class="wbfoot">
+        <button class="btn btn-acid" onclick="runWB()">▶ Run Pipeline</button>
+        <button class="btn btn-ghost" onclick="saveWB()">💾 Save</button>
+        <button class="btn btn-ghost" onclick="loadTpl()">📋 Load Template</button>
+        <span id="wbSt" style="font-size:12px;color:var(--muted);margin-left:4px"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ DEVELOPER PORTAL -->
+<section class="sp" id="developer">
+  <div class="con">
+    <div class="stag">🚀 For Builders</div>
+    <h2 class="stitle" style="margin-bottom:8px">Submit Your <em>AI Agent</em></h2>
+    <p class="sdesc" style="margin-bottom:56px">Join 840+ developers already reaching 128K+ monthly active users on AI Galaxy.</p>
+    <div class="dg">
+      <div class="fc">
+        <h3>Publish Your Agent</h3>
+        <p>Free listing with analytics, playground testing, and user reviews. Upgrade for featured placement.</p>
+        <div class="fg"><label class="fl">Agent Name</label><input class="fi" placeholder="e.g. DeepResearch AI"/></div>
+        <div class="fg"><label class="fl">Description</label><textarea class="fta" placeholder="What problem does your agent solve?"></textarea></div>
+        <div class="fg"><label class="fl">Category</label>
+          <select class="fse">
+            <option>Writing AI</option><option>Coding AI</option><option>Research AI</option>
+            <option>Image Generation</option><option>Video Creation</option><option>Voice AI</option>
+            <option>Data Analysis</option><option>Business Automation</option><option>Security AI</option><option>Enterprise AI</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">Demo URL</label><input class="fi" placeholder="https://your-agent.com/demo"/></div>
+        <div class="fg"><label class="fl">API Endpoint</label><input class="fi" placeholder="https://api.your-agent.com/v1"/></div>
+        <div class="fg"><label class="fl">Pricing Model</label>
+          <select class="fse"><option>Free</option><option>Freemium</option><option>Paid</option><option>Usage-Based</option><option>Enterprise</option></select>
+        </div>
+        <button class="fsub" onclick="submitDev()">🚀 Submit to AI Galaxy</button>
+      </div>
+      <div class="perks">
+        <div class="perk"><div class="pi">📈</div><div><h4>Instant Reach</h4><p>Get in front of 128,000+ developers, enterprises, and creators actively searching for AI tools in 2026.</p><div class="ps">128K+ users</div></div></div>
+        <div class="perk"><div class="pi">🔬</div><div><h4>Live Playground</h4><p>Users test your agent directly on AI Galaxy. Gartner reports 40% higher adoption when users test before buying.</p><div class="ps">40% ↑ adoption</div></div></div>
+        <div class="perk"><div class="pi">📊</div><div><h4>Real-Time Analytics</h4><p>Usage metrics, ratings, integration requests, and conversion analytics — all free with your listing.</p><div class="ps">Real-time data</div></div></div>
+        <div class="perk"><div class="pi">🤝</div><div><h4>MCP Integration</h4><p>Support for Anthropic's Model Context Protocol — the standard agent interface for 2026 and beyond.</p><div class="ps">MCP Ready</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ FOOTER -->
+<footer>
+  <div class="con">
+    <div class="ftop">
+      <div class="fbrand">
+        <div class="logo"><div class="logo-mark">✦</div><span class="logo-text">AI GALAXY</span></div>
+        <p>The universe's most complete AI agent discovery platform. Powered by live 2026 market data from Gartner, McKinsey, and EY.</p>
+        <div class="fsoc"><div class="sb2">𝕏</div><div class="sb2">in</div><div class="sb2">gh</div><div class="sb2">dc</div></div>
+      </div>
+      <div class="fcol"><h5>Platform</h5><a>Marketplace</a><a>Playground</a><a>Comparison</a><a>Workflow Builder</a><a>News Feed</a></div>
+      <div class="fcol"><h5>Developers</h5><a>Submit Agent</a><a>API Docs</a><a>MCP Integration</a><a>Analytics</a><a>Enterprise</a></div>
+      <div class="fcol"><h5>Company</h5><a>About</a><a>2026 AI Report</a><a>Blog</a><a>Privacy</a><a>Terms</a></div>
+    </div>
+    <div class="fbot">
+      <span>© 2026 AI Galaxy Platform — All rights reserved</span>
+      <span style="color:var(--acid)">✦ Explore the AI Universe</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast + Modal -->
+<div class="tst" id="tst"></div>
+<div class="modw" id="agMod">
+  <div class="mod">
+    <button class="modx" onclick="closeM()">✕</button>
+    <div id="agModC"></div>
+  </div>
+</div>
+
+<!-- ── Scripts (order matters: data → api → ui) ── -->
+<script src="js/data.js"></script>
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+
+</body>
+</html>
