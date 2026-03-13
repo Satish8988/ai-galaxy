@@ -6,7 +6,7 @@ require('dotenv').config();
 const app  = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors({ origin: process.env.FRONTEND_ORIGIN || 'http://127.0.0.1:5500' }));
+app.use(cors({ origin: process.env.FRONTEND_ORIGIN || 'https://satish8988.github.io' }));
 app.use(express.json());
 
 // ── Health check ─────────────────────────────────────────────────────────────
