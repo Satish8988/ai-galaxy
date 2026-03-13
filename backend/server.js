@@ -9,42 +9,34 @@ const PORT = process.env.PORT || 3001;
 app.use(cors({ origin: process.env.FRONTEND_ORIGIN || 'https://satish8988.github.io' }));
 app.use(express.json());
 
-// ── Health check ─────────────────────────────────────────────────────────────
 app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  res.json({ status: 'ok' });
 });
 
-// ── Non-streaming call  (hero search + marketplace AI search) ─────────────────
 app.post('/api/claude/chat', async (req, res) => {
   const { system, messages, max_tokens = 1000 } = req.body;
-  if (!process.env.ANTHROPIC_API_KEY)
-    return res.status(500).json({ error: 'ANTHROPIC_API_KEY not set in .env' });
-
   try {
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
+    const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method : 'POST',
       headers: {
-        'Content-Type'     : 'application/json',
-        'x-api-key'        : process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
+        'Content-Type' : 'application/json',
+        'Authorization': `Bearer ${process.env.ANTHROPIC_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514', max_tokens, system, messages,
+        model   : 'meta-llama/llama-3.1-8b-instruct:free',
+        messages: [{ role:'system', content: system }, ...messages],
+        max_tokens,
       }),
     });
     const data = await r.json();
-    if (!r.ok) return res.status(r.status).json({ error: data.error?.message || 'API error' });
-    res.json({ text: data.content?.[0]?.text || '' });
+    res.json({ text: data.choices?.[0]?.message?.content || '' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// ── Streaming call  (Playground live output) ──────────────────────────────────
 app.post('/api/claude/stream', async (req, res) => {
   const { system, messages, max_tokens = 1200 } = req.body;
-  if (!process.env.ANTHROPIC_API_KEY)
-    return res.status(500).json({ error: 'ANTHROPIC_API_KEY not set in .env' });
 
   res.setHeader('Content-Type' , 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache');
@@ -52,28 +44,37 @@ app.post('/api/claude/stream', async (req, res) => {
   res.flushHeaders();
 
   try {
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
+    const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method : 'POST',
       headers: {
-        'Content-Type'     : 'application/json',
-        'x-api-key'        : process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
+        'Content-Type' : 'application/json',
+        'Authorization': `Bearer ${process.env.ANTHROPIC_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514', max_tokens, system, messages, stream: true,
+        model   : 'meta-llama/llama-3.1-8b-instruct:free',
+        messages: [{ role:'system', content: system }, ...messages],
+        max_tokens,
+        stream  : true,
       }),
     });
 
-    if (!r.ok) {
-      const err = await r.json();
-      res.write(`data: ${JSON.stringify({ error: err.error?.message })}\n\n`);
-      return res.end();
-    }
-
-    r.body.on('data' , chunk => res.write(chunk));
-    r.body.on('end'  , ()    => res.end());
-    r.body.on('error', ()    => res.end());
-    req.on('close'   , ()    => r.body.destroy());
+    const reader  = r.body;
+    const decoder = new (require('string_decoder').StringDecoder)('utf8');
+    reader.on('data', chunk => {
+      const lines = decoder.write(chunk).split('\n');
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        const raw = line.slice(6).trim();
+        if (raw === '[DONE]') { res.write('data: [DONE]\n\n'); return; }
+        try {
+          const evt  = JSON.parse(raw);
+          const text = evt.choices?.[0]?.delta?.content;
+          if (text) res.write(`data: ${JSON.stringify({ type:'content_block_delta', delta:{ type:'text_delta', text }})}\n\n`);
+        } catch (_) {}
+      }
+    });
+    reader.on('end',   () => res.end());
+    reader.on('error', () => res.end());
   } catch (err) {
     res.write(`data: ${JSON.stringify({ error: err.message })}\n\n`);
     res.end();
