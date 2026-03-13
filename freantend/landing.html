@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Galaxy — The Universe of AI Agents</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=Cabinet+Grotesk:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#050508;--panel:#0d0d1a;--border:rgba(180,255,80,0.12);
+      --acid:#b4ff50;--acid2:#7fff00;--plasma:#ff6b1a;--cyan:#00f5d4;--violet:#8b5cf6;--red:#ff3366;
+      --text:#f0f0e8;--muted:#6b6b8a;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;scroll-behavior:smooth}
+    body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;cursor:none}
+
+    /* Cursor */
+    .cursor-dot{width:6px;height:6px;background:var(--acid);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
+    .cursor-ring{width:28px;height:28px;border:1.5px solid rgba(180,255,80,0.5);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all 0.1s}
+
+    /* Stars canvas */
+    #stars-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:500;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(5,5,8,0.7);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+    .logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:800;cursor:pointer;text-decoration:none}
+    .logo-icon{font-size:24px;display:inline-block;animation:spin 8s linear infinite}
+    @keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+    .logo-text{color:var(--text)}.logo-accent{color:var(--acid)}
+    .nav-right{display:flex;gap:10px}
+    .btn{padding:9px 22px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:none;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.2s;letter-spacing:0.3px}
+    .btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted)}
+    .btn-ghost:hover{border-color:var(--acid);color:var(--acid)}
+    .btn-primary{background:var(--acid);color:#050508}
+    .btn-primary:hover{background:var(--acid2);box-shadow:0 0 28px rgba(180,255,80,0.4);transform:translateY(-1px)}
+    .btn-lg{padding:14px 36px;font-size:15px;border-radius:12px}
+    .btn-outline{background:transparent;border:1.5px solid rgba(255,255,255,0.25);color:var(--text)}
+    .btn-outline:hover{border-color:var(--text)}
+
+    /* HERO SECTION */
+    .hero{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px 40px}
+    .glow-bg{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 60% at 50% 40%, rgba(180,255,80,0.07) 0%, transparent 70%)}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:3px;text-transform:uppercase;padding:6px 16px;border:1px solid var(--border);border-radius:4px;margin-bottom:28px;animation:fadeup 0.8s ease both}
+    .hero-title{font-family:'Playfair Display',serif;font-size:clamp(48px,8vw,100px);font-weight:900;line-height:1.0;letter-spacing:-2px;margin-bottom:20px;animation:fadeup 0.8s 0.1s ease both}
+    .hero-title .line2{color:var(--acid);font-style:italic}
+    .hero-sub{font-size:17px;color:var(--muted);line-height:1.75;max-width:540px;margin:0 auto 40px;animation:fadeup 0.8s 0.2s ease both}
+    .hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;animation:fadeup 0.8s 0.3s ease both}
+    @keyframes fadeup{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+    /* STATS ROW */
+    .stats-row{position:relative;z-index:2;display:flex;justify-content:center;gap:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(13,13,24,0.5);margin-top:0}
+    .stat{padding:28px 40px;text-align:center;border-right:1px solid var(--border)}
+    .stat:last-child{border-right:none}
+    .stat-n{font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:var(--acid);letter-spacing:-1px}
+    .stat-l{font-size:12px;color:var(--muted);margin-top:4px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase}
+
+    /* FEATURES */
+    .features{position:relative;z-index:2;padding:100px 48px;max-width:1200px;margin:0 auto}
+    .sec-tag{font-size:11px;font-weight:700;color:var(--acid);letter-spacing:3px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+    .sec-tag::before{content:'';width:20px;height:1px;background:var(--acid)}
+    .sec-title{font-family:'Playfair Display',serif;font-size:clamp(32px,4vw,52px);font-weight:900;letter-spacing:-1.5px;line-height:1.1;margin-bottom:56px}
+    .sec-title em{font-style:italic;color:var(--acid)}
+    .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .feat-card{background:rgba(13,13,24,0.8);border:1px solid var(--border);border-radius:16px;padding:32px;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);position:relative;overflow:hidden}
+    .feat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--acid),transparent);transform:scaleX(0);transition:transform 0.4s}
+    .feat-card:hover{border-color:rgba(180,255,80,0.3);transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,0.5)}
+    .feat-card:hover::after{transform:scaleX(1)}
+    .feat-icon{font-size:36px;margin-bottom:18px;display:block}
+    .feat-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:800;margin-bottom:10px;letter-spacing:-0.5px}
+    .feat-desc{font-size:14px;color:var(--muted);line-height:1.7}
+
+    /* HOW IT WORKS */
+    .how{position:relative;z-index:2;padding:80px 48px;background:rgba(13,13,24,0.4);border-top:1px solid var(--border)}
+    .how-inner{max-width:1000px;margin:0 auto}
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:56px}
+    .step{text-align:center;padding:24px}
+    .step-num{width:48px;height:48px;border-radius:50%;background:var(--acid);color:#050508;font-size:18px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-family:'Playfair Display',serif}
+    .step-title{font-size:16px;font-weight:800;margin-bottom:8px;letter-spacing:-0.3px}
+    .step-desc{font-size:13px;color:var(--muted);line-height:1.7}
+
+    /* CTA SECTION */
+    .cta-section{position:relative;z-index:2;padding:100px 48px;text-align:center}
+    .cta-inner{max-width:640px;margin:0 auto}
+    .cta-title{font-family:'Playfair Display',serif;font-size:clamp(32px,4vw,52px);font-weight:900;letter-spacing:-1.5px;line-height:1.1;margin-bottom:16px}
+    .cta-title em{color:var(--acid);font-style:italic}
+    .cta-desc{font-size:15px;color:var(--muted);margin-bottom:36px;line-height:1.7}
+
+    /* MODAL */
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:1000;backdrop-filter:blur(16px);align-items:center;justify-content:center}
+    .modal-overlay.open{display:flex}
+    .modal{background:#0d0d1a;border:1px solid var(--border);border-radius:20px;padding:40px;width:100%;max-width:440px;animation:fadeup 0.35s ease;position:relative}
+    .modal-close{position:absolute;top:16px;right:20px;background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif}
+    .modal-close:hover{color:var(--text)}
+    .modal-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;text-align:center;margin-bottom:6px}
+    .modal-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:28px}
+    .tabs{display:flex;gap:0;background:rgba(5,5,8,0.8);border-radius:8px;padding:4px;margin-bottom:24px}
+    .tab{flex:1;padding:9px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;border-radius:6px;color:var(--muted);transition:all 0.2s}
+    .tab.on{background:var(--acid);color:#050508}
+    .form-group{margin-bottom:16px}
+    .form-label{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:7px}
+    .form-input{width:100%;background:rgba(5,5,8,0.8);border:1.5px solid var(--border);border-radius:10px;padding:12px 16px;color:var(--text);font-size:14px;font-family:'Cabinet Grotesk',sans-serif;outline:none;transition:border-color 0.2s}
+    .form-input:focus{border-color:var(--acid);box-shadow:0 0 20px rgba(180,255,80,0.08)}
+    .form-input::placeholder{color:var(--muted)}
+    .form-submit{width:100%;padding:14px;border-radius:10px;background:var(--acid);color:#050508;font-size:15px;font-weight:800;border:none;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.2s;margin-top:4px}
+    .form-submit:hover{background:var(--acid2);box-shadow:0 0 30px rgba(180,255,80,0.4);transform:translateY(-1px)}
+    .modal-footer{text-align:center;margin-top:18px;font-size:13px;color:var(--muted)}
+    .modal-footer a{color:var(--acid);cursor:pointer;font-weight:700}
+    .modal-footer a:hover{text-decoration:underline}
+    .divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--muted);font-size:12px}
+    .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+    .social-btn{width:100%;padding:12px;border-radius:10px;background:transparent;border:1.5px solid var(--border);color:var(--text);font-size:14px;font-weight:700;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px}
+    .social-btn:hover{border-color:var(--acid);color:var(--acid)}
+    .success-msg{display:none;text-align:center;padding:20px 0}
+    .success-msg .big-check{font-size:56px;margin-bottom:12px;display:block}
+    .success-msg h3{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;margin-bottom:8px}
+    .success-msg p{font-size:14px;color:var(--muted);line-height:1.6}
+
+    /* FOOTER */
+    footer{position:relative;z-index:2;border-top:1px solid var(--border);padding:48px 0 28px;background:rgba(5,5,8,0.98)}
+    .footer-inner{max-width:1200px;margin:0 auto;padding:0 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+    .footer-copy{font-size:13px;color:var(--muted)}
+    .footer-links{display:flex;gap:24px}
+    .footer-links a{font-size:13px;color:var(--muted);cursor:pointer;transition:color 0.15s;text-decoration:none}
+    .footer-links a:hover{color:var(--acid)}
+
+    /* Scroll reveal */
+    .reveal{opacity:0;transform:translateY(32px);transition:all 0.7s cubic-bezier(0.16,1,0.3,1)}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+
+    @media(max-width:768px){
+      nav{padding:0 20px}.hero{padding:80px 20px 40px}
+      .feat-grid,.steps{grid-template-columns:1fr}
+      .stats-row{flex-wrap:wrap}.stat{border-right:none;border-bottom:1px solid var(--border);width:50%}
+      .features,.how,.cta-section{padding:60px 20px}
+      .footer-inner{padding:0 20px;flex-direction:column;text-align:center}
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="stars-canvas"></canvas>
+<div class="cursor-dot" id="cd"></div>
+<div class="cursor-ring" id="cr"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="index.html">
+    <span class="logo-icon">🌌</span>
+    <span class="logo-text">AI<span class="logo-accent">Galaxy</span></span>
+  </a>
+  <div class="nav-right">
+    <button class="btn btn-ghost" onclick="openModal('login')">Log In</button>
+    <button class="btn btn-primary" onclick="openModal('signup')">Join Free →</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="glow-bg"></div>
+  <div class="eyebrow">🌌 AI GALAXY PLATFORM · 2026</div>
+  <h1 class="hero-title">
+    The Universe of AI<br>
+    <span class="line2">Is Waiting for You.</span>
+  </h1>
+  <p class="hero-sub">Discover, test and deploy the world's most powerful AI agents. 2,847 verified tools. Live data. No guesswork.</p>
+  <div class="hero-btns">
+    <button class="btn btn-primary btn-lg" onclick="openModal('signup')">Join Free — It's Easy ✦</button>
+    <button class="btn btn-outline btn-lg" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">See How It Works ↓</button>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-row reveal">
+  <div class="stat"><div class="stat-n">2,847</div><div class="stat-l">AI Agents</div></div>
+  <div class="stat"><div class="stat-n">$10.9B</div><div class="stat-l">Market Size 2026</div></div>
+  <div class="stat"><div class="stat-n">62%</div><div class="stat-l">Orgs Using AI</div></div>
+  <div class="stat"><div class="stat-n">128K+</div><div class="stat-l">Monthly Users</div></div>
+  <div class="stat"><div class="stat-n">Free</div><div class="stat-l">To Get Started</div></div>
+</div>
+
+<!-- FEATURES -->
+<div class="features" id="features">
+  <div class="sec-tag">✦ Why AI Galaxy</div>
+  <h2 class="sec-title">Everything You Need<br><em>In One Universe</em></h2>
+  <div class="feat-grid reveal">
+    <div class="feat-card">
+      <span class="feat-icon">🔍</span>
+      <div class="feat-title">Discover Agents</div>
+      <p class="feat-desc">Browse 2,847 verified AI agents across 10 categories. Filter by use case, pricing, and capabilities. Find your perfect tool in seconds.</p>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">⚡</span>
+      <div class="feat-title">AI-Powered Search</div>
+      <p class="feat-desc">Describe your goal in plain English. Our AI instantly recommends the best agents for your specific needs — no technical knowledge required.</p>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">🧪</span>
+      <div class="feat-title">Live Playground</div>
+      <p class="feat-desc">Test any AI agent before you commit. Real API calls, live responses, zero signup required. See exactly what you're getting.</p>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">📊</span>
+      <div class="feat-title">Compare Agents</div>
+      <p class="feat-desc">Side-by-side comparison of ChatGPT, Claude, Gemini, Copilot and more. Features, pricing, context windows — all in one table.</p>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">🔗</span>
+      <div class="feat-title">Workflow Builder</div>
+      <p class="feat-desc">Chain multiple agents into powerful pipelines. Build multi-agent workflows inspired by real 2026 enterprise deployments.</p>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">🚀</span>
+      <div class="feat-title">Publish Your Agent</div>
+      <p class="feat-desc">Developers — reach 128K+ monthly users. Free listing with analytics, playground testing, and real-time conversion data.</p>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="how reveal">
+  <div class="how-inner">
+    <div class="sec-tag">✦ Get Started</div>
+    <h2 class="sec-title">Three Steps to<br><em>Your AI Universe</em></h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">Create Your Account</div>
+        <p class="step-desc">Sign up free in 30 seconds. No credit card required. Instant access to all 2,847 AI agents and tools.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">Describe Your Goal</div>
+        <p class="step-desc">Tell our AI what you want to achieve in plain English. It finds and recommends the perfect agents for you.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">Test &amp; Deploy</div>
+        <p class="step-desc">Try agents live in the playground. When you're ready, deploy with one click. No technical expertise needed.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section reveal">
+  <div class="cta-inner">
+    <h2 class="cta-title">Ready to Explore<br><em>the AI Universe?</em></h2>
+    <p class="cta-desc">Join 128,000+ developers, creators and enterprises already using AI Galaxy to find and deploy AI agents.</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-primary btn-lg" onclick="openModal('signup')">Create Free Account →</button>
+      <button class="btn btn-outline btn-lg" onclick="window.location.href='index.html'">Explore Agents First</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-copy">© 2026 AI Galaxy Platform — All rights reserved</div>
+    <div class="footer-links">
+      <a>About</a><a>Privacy</a><a>Terms</a><a>Blog</a><a>Contact</a>
+    </div>
+    <div style="color:var(--acid);font-size:13px;font-weight:700">✦ Explore the AI Universe</div>
+  </div>
+</footer>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <div class="tab on" id="tabLogin" onclick="switchTab('login')">Log In</div>
+      <div class="tab" id="tabSignup" onclick="switchTab('signup')">Sign Up</div>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="loginForm">
+      <div class="modal-title">Welcome Back</div>
+      <div class="modal-sub">Log in to your AI Galaxy account</div>
+      <div class="social-btn" onclick="socialAuth('Google')">
+        <span>🔵</span> Continue with Google
+      </div>
+      <div class="social-btn" onclick="socialAuth('GitHub')">
+        <span>⚫</span> Continue with GitHub
+      </div>
+      <div class="divider">or use email</div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" type="email" id="loginEmail" placeholder="you@example.com"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" type="password" id="loginPassword" placeholder="••••••••"/>
+      </div>
+      <button class="form-submit" onclick="handleLogin()">Log In to AI Galaxy</button>
+      <div class="modal-footer">
+        Don't have an account? <a onclick="switchTab('signup')">Sign up free</a>
+      </div>
+    </div>
+
+    <!-- SIGNUP FORM -->
+    <div id="signupForm" style="display:none">
+      <div class="modal-title">Join AI Galaxy</div>
+      <div class="modal-sub">Free forever. No credit card required.</div>
+      <div class="social-btn" onclick="socialAuth('Google')">
+        <span>🔵</span> Continue with Google
+      </div>
+      <div class="social-btn" onclick="socialAuth('GitHub')">
+        <span>⚫</span> Continue with GitHub
+      </div>
+      <div class="divider">or use email</div>
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input class="form-input" type="text" id="signupName" placeholder="Your name"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" type="email" id="signupEmail" placeholder="you@example.com"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" type="password" id="signupPassword" placeholder="Min 8 characters"/>
+      </div>
+      <button class="form-submit" onclick="handleSignup()">Create Free Account →</button>
+      <div class="modal-footer">
+        Already have an account? <a onclick="switchTab('login')">Log in</a>
+      </div>
+    </div>
+
+    <!-- SUCCESS MESSAGE -->
+    <div class="success-msg" id="successMsg">
+      <span class="big-check">🎉</span>
+      <h3 id="successTitle">Welcome to AI Galaxy!</h3>
+      <p id="successDesc">Your account is ready. Redirecting you to the universe...</p>
+    </div>
+  </div>
+</div>
+
+<!-- STARS -->
+<script>
+(function(){
+  const canvas=document.getElementById('stars-canvas');
+  const ctx=canvas.getContext('2d');
+  let W,H,stars=[],orbs=[];
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize);
+  for(let i=0;i<200;i++) stars.push({x:Math.random(),y:Math.random(),r:Math.random()*1.4+0.3,alpha:Math.random()*0.6+0.2,phase:Math.random()*Math.PI*2,speed:0.005+Math.random()*0.01});
+  const oc=['rgba(180,255,80,','rgba(0,245,212,','rgba(139,92,246,','rgba(255,107,26,','rgba(255,51,102,'];
+  for(let i=0;i<5;i++) orbs.push({x:Math.random(),y:Math.random(),r:180+Math.random()*200,c:oc[i],vx:(Math.random()-.5)*.0003,vy:(Math.random()-.5)*.0003,phase:Math.random()*Math.PI*2,sp:0.002+Math.random()*.003});
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    orbs.forEach(o=>{
+      o.phase+=o.sp;o.x+=o.vx;o.y+=o.vy;
+      if(o.x<0)o.x=1;if(o.x>1)o.x=0;if(o.y<0)o.y=1;if(o.y>1)o.y=0;
+      const cx=o.x*W,cy=o.y*H,g=ctx.createRadialGradient(cx,cy,0,cx,cy,o.r);
+      g.addColorStop(0,o.c+'0.08)');g.addColorStop(.5,o.c+'0.03)');g.addColorStop(1,o.c+'0)');
+      ctx.beginPath();ctx.arc(cx,cy,o.r,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
+    });
+    stars.forEach(s=>{
+      s.phase+=s.speed;
+      const a=(Math.sin(s.phase)*.4+.6)*s.alpha;
+      ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,255,255,${a*0.8})`;ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+
+<!-- CURSOR + SCROLL + AUTH -->
+<script>
+// Cursor
+document.addEventListener('mousemove',e=>{
+  document.getElementById('cd').style.cssText=`left:${e.clientX}px;top:${e.clientY}px`;
+  setTimeout(()=>{document.getElementById('cr').style.cssText=`left:${e.clientX}px;top:${e.clientY}px`;},80);
+});
+
+// Scroll reveal
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// Modal
+function openModal(tab){
+  document.getElementById('authModal').classList.add('open');
+  switchTab(tab||'login');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('authModal').classList.remove('open');
+  document.body.style.overflow='';
+  // Reset
+  document.getElementById('successMsg').style.display='none';
+  document.getElementById('loginForm').style.display='block';
+  document.getElementById('signupForm').style.display='none';
+}
+document.getElementById('authModal').addEventListener('click',function(e){
+  if(e.target===this) closeModal();
+});
+
+function switchTab(tab){
+  document.getElementById('loginForm').style.display = tab==='login'?'block':'none';
+  document.getElementById('signupForm').style.display = tab==='signup'?'block':'none';
+  document.getElementById('successMsg').style.display='none';
+  document.getElementById('tabLogin').className='tab'+(tab==='login'?' on':'');
+  document.getElementById('tabSignup').className='tab'+(tab==='signup'?' on':'');
+}
+
+function showSuccess(title, desc){
+  document.getElementById('loginForm').style.display='none';
+  document.getElementById('signupForm').style.display='none';
+  document.getElementById('successMsg').style.display='block';
+  document.getElementById('successTitle').textContent=title;
+  document.getElementById('successDesc').textContent=desc;
+  setTimeout(()=>{ closeModal(); window.location.href='index.html'; }, 2500);
+}
+
+function handleLogin(){
+  const email=document.getElementById('loginEmail').value.trim();
+  const pass=document.getElementById('loginPassword').value.trim();
+  if(!email||!pass){ alert('Please fill in all fields'); return; }
+  showSuccess('Welcome Back! 🌌','Logging you in to AI Galaxy...');
+}
+
+function handleSignup(){
+  const name=document.getElementById('signupName').value.trim();
+  const email=document.getElementById('signupEmail').value.trim();
+  const pass=document.getElementById('signupPassword').value.trim();
+  if(!name||!email||!pass){ alert('Please fill in all fields'); return; }
+  if(pass.length<8){ alert('Password must be at least 8 characters'); return; }
+  showSuccess('Welcome to AI Galaxy! 🎉','Your account is ready. Entering the universe...');
+}
+
+function socialAuth(provider){
+  showSuccess(`Connected with ${provider}! 🌌`,'Entering AI Galaxy...');
+}
+</script>
+</body>
+</html>
