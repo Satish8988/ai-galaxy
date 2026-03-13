@@ -4,34 +4,24 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AI Galaxy — Discover AI Agents 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=Cabinet+Grotesk:wght@400;500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css"/>
 </head>
 <body>
 
-<!-- Custom cursor -->
+<canvas id="stars-canvas"></canvas>
 <div class="cursor-dot" id="cd"></div>
 <div class="cursor-ring" id="cr"></div>
 
-<!-- 3D Animated Background Canvas -->
-<canvas id="bg-canvas"></canvas>
-
-<!-- ═══════════════════════════════════════════════════ NAV -->
-<nav>
+<!-- NAV -->
+<nav id="mainNav">
   <div class="logo">
-    <!-- Animated Galaxy Logo -->
-    <div class="logo-mark">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="animation:none">
-        <circle cx="12" cy="12" r="3" fill="#050508"/>
-        <path d="M12 2 C17 2 22 6.5 22 12 C22 17.5 17 22 12 22 C7 22 2 17.5 2 12 C2 6.5 7 2 12 2" stroke="#050508" stroke-width="1.5" fill="none" stroke-dasharray="3 2"/>
-        <circle cx="12" cy="4" r="1.5" fill="#050508"/>
-        <circle cx="20" cy="12" r="1.5" fill="#050508"/>
-        <circle cx="4" cy="12" r="1.5" fill="#050508"/>
-      </svg>
-    </div>
-    <span class="logo-text">AI GALAXY</span>
+    <div class="logo-icon">🌌</div>
+    <span class="logo-text">AI<span class="logo-accent">Galaxy</span></span>
   </div>
   <div class="nav-links">
-    <span class="nav-a active" onclick="goTo('#market')">Marketplace</span>
+    <span class="nav-a" onclick="goTo('#market')">Marketplace</span>
     <span class="nav-a" onclick="goTo('#playground')">Playground</span>
     <span class="nav-a" onclick="goTo('#compare')">Compare</span>
     <span class="nav-a" onclick="goTo('#workflow')">Workflows</span>
@@ -39,99 +29,88 @@
   </div>
   <div class="nav-right">
     <button class="btn btn-ghost">Sign In</button>
-    <button class="btn btn-acid">Join Free →</button>
+    <button class="btn btn-primary">Join Free →</button>
   </div>
 </nav>
 
-<!-- ═══════════════════════════════════════════════════ TICKER -->
-<div class="ticker"><div class="ticker-inner" id="tickerEl"></div></div>
+<!-- HERO -->
+<section class="full-screen" id="hero">
+  <div class="section-glow glow-acid"></div>
+  <div class="hero-content">
+    <div class="eyebrow"><span>🌌</span> AI GALAXY PLATFORM</div>
+    <h1 class="hero-title">The Universe of AI<br><span class="accent-text">Is Waiting for You.</span></h1>
+    <p class="hero-sub">Discover, test, and deploy the world's most powerful AI agents.<br>2,847 agents. Live data. No guesswork.</p>
+    <div class="hero-btns">
+      <button class="btn btn-primary btn-lg" onclick="goTo('#search-section')">Explore Agents ✦</button>
+      <button class="btn btn-outline btn-lg" onclick="goTo('#playground')">Try Playground ↓</button>
+    </div>
+  </div>
+  <div class="scroll-hint">↓ Scroll to explore</div>
+</section>
 
-<!-- ═══════════════════════════════════════════════════ HERO -->
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-eyebrow"><span class="pulse-dot"></span> LIVE — 2,847 AI AGENTS · 2026</div>
-    <h1 class="ht">
-      <span class="w1">Discover</span>
-      <span class="w2">AI Galaxy</span>
-      <span class="w3">Agents Universe</span>
-    </h1>
-    <p class="hero-desc">The world's most complete AI agent discovery platform. <b style="color:var(--text)">62% of organizations</b> are already deploying AI agents.</p>
-    <div class="ssearch">
-      <div class="ssearch-box">
-        <input type="text" id="heroQ" placeholder="Describe your goal... e.g. I want to grow my YouTube channel"/>
-        <button class="sbtn" onclick="runWF()">⚡ Get AI Agents</button>
+<!-- SECTION 1 — SEARCH -->
+<section class="full-screen chapter-section" id="search-section">
+  <div class="section-glow glow-cyan"></div>
+  <div class="chapter-split">
+    <div class="chapter-left">
+      <div class="chapter-tag">CHAPTER 1</div>
+      <h2 class="chapter-title">Find Your<br><em>AI Agent</em></h2>
+      <p class="chapter-desc">Tell us your goal in plain English. Our AI will find the perfect agent from 2,847 verified tools.</p>
+      <div class="search-wrap">
+        <input type="text" id="heroQ" class="big-search" placeholder="e.g. I want to grow my YouTube channel..."/>
+        <button class="btn btn-primary" onclick="runWF()">⚡ Get AI Agents</button>
       </div>
-    </div>
-    <div class="hints" style="margin-bottom:0">
-      <span class="hint" onclick="fQ('build a SaaS app in 30 days')">🚀 Build SaaS</span>
-      <span class="hint" onclick="fQ('create viral social media content')">📱 Social Content</span>
-      <span class="hint" onclick="fQ('automate my customer support')">🤖 Support AI</span>
-      <span class="hint" onclick="fQ('write and publish a research paper')">🔬 Research</span>
-      <span class="hint" onclick="fQ('start a YouTube channel')">🎬 YouTube</span>
-    </div>
-    <div class="wf-res" id="wfRes">
-      <div id="wfLoading" style="display:none;text-align:center;padding:16px 0">
-        <div style="display:inline-flex;align-items:center;gap:10px;color:var(--acid);font-size:13px;font-weight:700;letter-spacing:1px">
-          <span class="cur"></span> AI AGENT IS SEARCHING...
+      <div class="hints">
+        <span class="hint" onclick="fQ('build a SaaS app in 30 days')">🚀 Build SaaS</span>
+        <span class="hint" onclick="fQ('create viral social media content')">📱 Social Content</span>
+        <span class="hint" onclick="fQ('automate my customer support')">🤖 Support AI</span>
+        <span class="hint" onclick="fQ('start a YouTube channel')">🎬 YouTube</span>
+      </div>
+      <div class="wf-res" id="wfRes">
+        <div id="wfLoading" style="display:none;padding:14px 0;color:var(--acid);font-size:13px;font-weight:700;letter-spacing:1px"><span class="cur"></span> AI SEARCHING THE GALAXY...</div>
+        <div id="wfContent" style="display:none">
+          <div class="wfl">✦ AI Galaxy Recommendations</div>
+          <div class="wfchain" id="wfChain"></div>
+          <div id="wfAIAnswer" style="margin-top:12px;font-size:13px;line-height:1.8;color:var(--muted);border-top:1px solid rgba(180,255,80,0.1);padding-top:12px"></div>
+          <div id="wfAgentCards" style="margin-top:10px;display:flex;flex-wrap:wrap;gap:8px"></div>
         </div>
       </div>
-      <div id="wfContent" style="display:none">
-        <div class="wfl">✦ AI Galaxy — Live Agent Recommendations</div>
-        <div class="wfchain" id="wfChain"></div>
-        <div id="wfAIAnswer" style="margin-top:16px;font-size:13px;line-height:1.8;color:var(--muted);border-top:1px solid rgba(180,255,80,0.1);padding-top:14px"></div>
-        <div id="wfAgentCards" style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px"></div>
+    </div>
+    <div class="chapter-right">
+      <div class="stat-visual">
+        <div class="big-stat">
+          <div class="big-num acid">2,847</div>
+          <div class="big-label">AI Agents Indexed</div>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-pill">$10.9B Market</div>
+          <div class="stat-pill">62% Orgs Use AI</div>
+          <div class="stat-pill">49.6% CAGR</div>
+          <div class="stat-pill">40% Enterprise</div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════ DATA STRIP -->
-<div class="data-strip morph-section">
-  <div class="con">
-    <div class="ds"><div class="n">$10.9<span class="u">B</span></div><div class="l">AI Agent Market 2026</div><div class="s">Gartner, 2026</div></div>
-    <div class="ds"><div class="n">62<span class="u">%</span></div><div class="l">Orgs Deploying AI</div><div class="s">McKinsey State of AI</div></div>
-    <div class="ds"><div class="n">40<span class="u">%</span></div><div class="l">Enterprise Apps with AI</div><div class="s">Gartner Prediction EOY</div></div>
-    <div class="ds"><div class="n">49.6<span class="u">%</span></div><div class="l">Annual Market Growth</div><div class="s">DataCamp AI Report</div></div>
-    <div class="ds"><div class="n">2847<span class="u">+</span></div><div class="l">Agents on AI Galaxy</div><div class="s">Platform Data</div></div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════════════ MARKETPLACE -->
-<section class="sp morph-section" id="market">
-  <div class="con">
-    <div class="shs">
-      <div>
-        <div class="stag">✦ AI Galaxy Marketplace</div>
-        <h2 class="stitle">Top AI Agents<br><em>by Category</em></h2>
-        <p class="sdesc">Browse 18 verified 2026 AI agents — ask in plain English.</p>
-      </div>
-      <div style="text-align:right">
-        <div class="live-b"><div class="ld"></div> LIVE DATA</div>
-        <div style="font-size:26px;font-weight:800;color:var(--acid);margin-top:4px">2847</div>
-        <div style="font-size:11px;color:var(--muted)">agents indexed</div>
-      </div>
-    </div>
-    <!-- AI Search -->
-    <div style="max-width:580px;margin-bottom:10px">
-      <div style="display:flex;align-items:center;background:var(--panel);border:1.5px solid var(--border);border-radius:10px;padding:0 16px;transition:border-color 0.2s" id="mkSearchWrap">
+<!-- SECTION 2 — MARKETPLACE -->
+<section class="full-screen chapter-section" id="market">
+  <div class="section-glow glow-violet"></div>
+  <div class="chapter-full">
+    <div class="chapter-tag center-text">CHAPTER 2</div>
+    <h2 class="chapter-title center-text">Top AI Agents<br><em>by Category</em></h2>
+    <div class="mk-search-row">
+      <div class="mk-search-wrap" id="mkSearchWrap">
         <span style="color:var(--muted);font-size:16px;margin-right:10px">⌕</span>
-        <input type="text" id="mkS"
-          placeholder="Ask anything: 'best agent for content creation'..."
-          oninput="filterCards(this.value)"
-          onkeydown="if(event.key==='Enter')runMkSearch()"
-          style="flex:1;background:none;border:none;outline:none;color:var(--text);font-size:14px;font-family:'Cabinet Grotesk',sans-serif;padding:12px 0"/>
-        <button onclick="runMkSearch()"
-          style="background:var(--acid);border:none;border-radius:7px;padding:7px 14px;color:#050508;font-size:12px;font-weight:800;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;white-space:nowrap;transition:all 0.2s;margin-left:8px"
-          onmouseover="this.style.background='var(--acid2)'" onmouseout="this.style.background='var(--acid)'">⚡ AI Search</button>
+        <input type="text" id="mkS" placeholder="Ask AI: 'best agent for content creation'..." oninput="filterCards(this.value)" onkeydown="if(event.key==='Enter')runMkSearch()" style="flex:1;background:none;border:none;outline:none;color:var(--text);font-size:14px;font-family:'Cabinet Grotesk',sans-serif;padding:11px 0"/>
+        <button onclick="runMkSearch()" class="mk-btn">⚡ AI Search</button>
       </div>
-      <div id="mkAIPanel" style="display:none;margin-top:10px;background:rgba(13,13,24,0.97);border:1px solid rgba(180,255,80,0.25);border-radius:10px;padding:18px 20px;animation:morph-in 0.4s ease">
-        <div id="mkAILoading" style="display:none;text-align:center;padding:10px 0;color:var(--acid);font-size:12px;font-weight:700;letter-spacing:1px">
-          <span class="cur"></span>&nbsp; SEARCHING THE GALAXY...
-        </div>
+      <div id="mkAIPanel" style="display:none;margin-top:8px;background:rgba(5,5,8,0.95);border:1px solid rgba(180,255,80,0.2);border-radius:10px;padding:14px 18px">
+        <div id="mkAILoading" style="display:none;color:var(--acid);font-size:12px;font-weight:700"><span class="cur"></span> SEARCHING...</div>
         <div id="mkAIResult"></div>
       </div>
     </div>
-    <div class="cats">
+    <div class="cats" id="catBar">
       <div class="cat on" onclick="setCat('all',this)">All</div>
       <div class="cat" onclick="setCat('writing',this)">✍️ Writing</div>
       <div class="cat" onclick="setCat('coding',this)">💻 Coding</div>
@@ -140,77 +119,62 @@
       <div class="cat" onclick="setCat('voice',this)">🎙️ Voice</div>
       <div class="cat" onclick="setCat('research',this)">🔬 Research</div>
       <div class="cat" onclick="setCat('data',this)">📊 Data</div>
-      <div class="cat" onclick="setCat('automation',this)">⚡ Automation</div>
-      <div class="cat" onclick="setCat('enterprise',this)">🏢 Enterprise</div>
+      <div class="cat" onclick="setCat('automation',this)">⚡ Auto</div>
       <div class="cat" onclick="setCat('security',this)">🔐 Security</div>
     </div>
     <div class="agrid" id="agGrid"></div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════ TRENDING -->
-<section style="padding:0 0 72px;position:relative;z-index:2" class="morph-section">
-  <div class="con">
-    <div class="shs" style="margin-bottom:28px">
-      <div><div class="stag">🔥 This Week</div><h2 class="stitle" style="font-size:26px">Trending <em>Right Now</em></h2></div>
-    </div>
-    <div class="tgrid" id="tGrid"></div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════ PLAYGROUND -->
-<section class="sp morph-section" id="playground" style="background:rgba(13,13,24,0.4)">
-  <div class="con">
-    <div class="shs">
-      <div><div class="stag">⚡ Test Before You Commit</div><h2 class="stitle">AI Agent <em>Playground</em></h2><p class="sdesc">Test real agent behaviors. No signup required.</p></div>
-    </div>
-    <div class="pgw">
-      <div class="pgs">
-        <h3>Select AI Agent</h3>
-        <p style="font-size:11px;color:var(--muted);margin-bottom:14px;line-height:1.5">Live AI — every response is unique</p>
-        <div class="abtns" id="abtns">
-          <div class="abtn on"  onclick="pickAg(this,'writing')"    ><div class="dot" style="background:#b4ff50"></div>✍️ Writing AI</div>
-          <div class="abtn"     onclick="pickAg(this,'essay')"      ><div class="dot" style="background:#b4ff50"></div>📝 Essay Writer</div>
-          <div class="abtn"     onclick="pickAg(this,'coding')"     ><div class="dot" style="background:#00f5d4"></div>💻 Coding AI</div>
-          <div class="abtn"     onclick="pickAg(this,'research')"   ><div class="dot" style="background:#8b5cf6"></div>🔬 Research AI</div>
-          <div class="abtn"     onclick="pickAg(this,'education')"  ><div class="dot" style="background:#b4ff50"></div>🎓 Education AI</div>
-          <div class="abtn"     onclick="pickAg(this,'healthcare')" ><div class="dot" style="background:#ff3366"></div>🏥 Healthcare AI</div>
-          <div class="abtn"     onclick="pickAg(this,'finance')"    ><div class="dot" style="background:#00f5d4"></div>💹 Finance AI</div>
-          <div class="abtn"     onclick="pickAg(this,'legal')"      ><div class="dot" style="background:#8b5cf6"></div>⚖️ Legal AI</div>
-          <div class="abtn"     onclick="pickAg(this,'marketing')"  ><div class="dot" style="background:#ff6b1a"></div>📢 Marketing AI</div>
-          <div class="abtn"     onclick="pickAg(this,'automation')" ><div class="dot" style="background:#ff6b1a"></div>🤖 Automation AI</div>
-          <div class="abtn"     onclick="pickAg(this,'data')"       ><div class="dot" style="background:#ff3366"></div>📊 Data Analyst</div>
-          <div class="abtn"     onclick="pickAg(this,'security')"   ><div class="dot" style="background:#ff3366"></div>🔐 Security AI</div>
-        </div>
-        <div id="pgAgentBadge" style="margin-top:14px;padding:10px 12px;border-radius:8px;background:rgba(180,255,80,0.06);border:1px solid rgba(180,255,80,0.15);font-size:11px;color:var(--muted);line-height:1.6">
-          <span style="color:var(--acid);font-weight:800">Writing AI</span><br>Crafts posts, articles, essays and creative content.
-        </div>
+<!-- SECTION 3 — PLAYGROUND -->
+<section class="full-screen chapter-section" id="playground">
+  <div class="section-glow glow-plasma"></div>
+  <div class="chapter-split">
+    <div class="chapter-left">
+      <div class="chapter-tag">CHAPTER 3</div>
+      <h2 class="chapter-title">Test Live<br><em>AI Agents</em></h2>
+      <p class="chapter-desc">Real AI API. Every response is live-generated, never pre-written. No signup required.</p>
+      <div class="abtns" id="abtns">
+        <div class="abtn on" onclick="pickAg(this,'writing')"><div class="dot" style="background:#b4ff50"></div>✍️ Writing AI</div>
+        <div class="abtn" onclick="pickAg(this,'coding')"><div class="dot" style="background:#00f5d4"></div>💻 Coding AI</div>
+        <div class="abtn" onclick="pickAg(this,'research')"><div class="dot" style="background:#8b5cf6"></div>🔬 Research AI</div>
+        <div class="abtn" onclick="pickAg(this,'education')"><div class="dot" style="background:#b4ff50"></div>🎓 Education AI</div>
+        <div class="abtn" onclick="pickAg(this,'finance')"><div class="dot" style="background:#00f5d4"></div>💹 Finance AI</div>
+        <div class="abtn" onclick="pickAg(this,'marketing')"><div class="dot" style="background:#ff6b1a"></div>📢 Marketing AI</div>
+        <div class="abtn" onclick="pickAg(this,'legal')"><div class="dot" style="background:#8b5cf6"></div>⚖️ Legal AI</div>
+        <div class="abtn" onclick="pickAg(this,'data')"><div class="dot" style="background:#ff3366"></div>📊 Data Analyst</div>
       </div>
-      <div class="pgm">
-        <textarea class="pgi" id="pgIn" placeholder="Type any prompt — e.g.&#10;• Write an essay on APJ Abdul Kalam&#10;• Explain blockchain to a 10-year-old&#10;• Debug my React component&#10;• Summarize AI trends in healthcare 2026"></textarea>
-        <button class="pgr" id="pgRunBtn" onclick="runPG()">⚡ Run Real AI Agent</button>
+      <div id="pgAgentBadge" style="margin-top:12px;padding:10px;border-radius:8px;background:rgba(180,255,80,0.06);border:1px solid rgba(180,255,80,0.15);font-size:11px;color:var(--muted)">
+        <span style="color:var(--acid);font-weight:800">Writing AI</span> — Crafts posts, articles and creative content.
+      </div>
+    </div>
+    <div class="chapter-right">
+      <div class="pg-panel">
+        <textarea class="pgi" id="pgIn" placeholder="Type your prompt here...&#10;• Write an essay on APJ Abdul Kalam&#10;• Explain blockchain simply&#10;• Debug my React component"></textarea>
+        <button class="btn btn-primary" id="pgRunBtn" onclick="runPG()" style="width:100%;margin-top:10px;padding:13px">⚡ Run Real AI Agent</button>
         <div class="pgo">
-          <div class="pgol" style="display:flex;align-items:center;justify-content:space-between">
+          <div class="pgol" style="display:flex;justify-content:space-between;margin-bottom:8px">
             <span id="pgAgentLabel">✍️ WRITING AI — LIVE OUTPUT</span>
             <span id="pgTokens" style="font-size:10px;color:var(--muted)"></span>
           </div>
-          <div id="pgOut" style="color:var(--muted);white-space:pre-wrap;font-size:13px;line-height:1.8">Your real AI-generated result streams here. Every response is unique — powered by live AI.</div>
+          <div id="pgOut" style="color:var(--muted);white-space:pre-wrap;font-size:13px;line-height:1.8">Your AI-generated result appears here...</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════ COMPARE -->
-<section class="sp morph-section" id="compare">
-  <div class="con">
-    <div class="stag">⚡ Side-by-Side Analysis</div>
-    <h2 class="stitle" style="margin-bottom:40px">Agent <em>Comparison</em> <span class="pl">Matrix</span></h2>
-    <div style="overflow-x:auto">
+<!-- SECTION 4 — COMPARE -->
+<section class="full-screen chapter-section" id="compare">
+  <div class="section-glow glow-cyan"></div>
+  <div class="chapter-full">
+    <div class="chapter-tag center-text">CHAPTER 4</div>
+    <h2 class="chapter-title center-text">Agent <em>Comparison</em></h2>
+    <div style="overflow-x:auto;margin-top:36px">
       <table class="ctbl">
         <thead>
           <tr>
-            <th style="width:150px">Capability</th>
+            <th style="width:140px;text-align:left">Capability</th>
             <th><div class="acol"><span class="em">🤖</span><span class="nm">ChatGPT</span></div></th>
             <th><div class="acol"><span class="em">🧿</span><span class="nm">Claude 4</span></div></th>
             <th><div class="acol"><span class="em">💎</span><span class="nm">Gemini 2</span></div></th>
@@ -220,244 +184,153 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td>Text &amp; Writing</td> <td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="part">Limited</span></td><td><span class="yes">✓</span></td></tr>
-          <tr><td>Code Generation</td>   <td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td></tr>
-          <tr><td>Image Generation</td>  <td><span class="part">DALL-E 3</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td></tr>
-          <tr><td>Web Browsing</td>      <td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
-          <tr><td>Context Window</td>    <td><span class="part">128K</span></td><td><span class="yes">200K</span></td><td><span class="yes">1M</span></td><td><span class="part">128K</span></td><td><span class="part">32K</span></td><td><span class="part">32K</span></td></tr>
-          <tr><td>API Access</td>        <td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="part">Limited</span></td><td><span class="yes">✓</span></td><td><span class="yes">Open Source</span></td></tr>
-          <tr><td>Free Tier</td>         <td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
-          <tr><td>MCP Support</td>       <td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="part">Partial</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>Text &amp; Writing</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="part">Limited</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>Code Generation</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>Image Generation</td><td><span class="part">DALL-E 3</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td></tr>
+          <tr><td>Web Browsing</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>Context Window</td><td><span class="part">128K</span></td><td><span class="yes">200K</span></td><td><span class="yes">1M</span></td><td><span class="part">128K</span></td><td><span class="part">32K</span></td><td><span class="part">32K</span></td></tr>
+          <tr><td>Free Tier</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>MCP Support</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="part">Partial</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td></tr>
         </tbody>
       </table>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════ WORKFLOW BUILDER -->
-<section class="sp morph-section" id="workflow" style="background:rgba(13,13,24,0.4)">
-  <div class="con">
-    <div class="stag">🔗 Multi-Agent Orchestration</div>
-    <h2 class="stitle" style="margin-bottom:10px">AI Workflow <em>Builder</em></h2>
-    <p class="sdesc" style="margin-bottom:40px">Chain agents into powerful pipelines.</p>
-    <div class="wba">
+<!-- SECTION 5 — WORKFLOW -->
+<section class="full-screen chapter-section" id="workflow">
+  <div class="section-glow glow-acid"></div>
+  <div class="chapter-split">
+    <div class="chapter-left">
+      <div class="chapter-tag">CHAPTER 5</div>
+      <h2 class="chapter-title">Build AI<br><em>Workflows</em></h2>
+      <p class="chapter-desc">Chain multiple agents into powerful pipelines. Inspired by real 2026 enterprise deployments.</p>
       <div class="wbt-row">
-        <div class="wbt" onclick="addN('📝 Script Writer','#b4ff50')">+ Script Writer</div>
-        <div class="wbt" onclick="addN('🔍 Research AI','#00f5d4')">+ Research AI</div>
-        <div class="wbt" onclick="addN('💻 Code Agent','#8b5cf6')">+ Code Agent</div>
-        <div class="wbt" onclick="addN('🎨 Image Gen','#ff6b1a')">+ Image Gen</div>
+        <div class="wbt" onclick="addN('📝 Script Writer','#b4ff50')">+ Script</div>
+        <div class="wbt" onclick="addN('🔍 Research AI','#00f5d4')">+ Research</div>
+        <div class="wbt" onclick="addN('💻 Code Agent','#8b5cf6')">+ Code</div>
+        <div class="wbt" onclick="addN('🎨 Image Gen','#ff6b1a')">+ Image</div>
         <div class="wbt" onclick="addN('🎬 Video Creator','#ff3366')">+ Video</div>
-        <div class="wbt" onclick="addN('🎙️ Voice AI','#b4ff50')">+ Voice AI</div>
         <div class="wbt" onclick="addN('📊 Data Analyst','#00f5d4')">+ Data</div>
-        <div class="wbt" onclick="addN('📱 Social AI','#8b5cf6')">+ Social AI</div>
-        <div class="wbt" onclick="addN('🔐 Security Agent','#ff3366')">+ Security</div>
+        <div class="wbt" onclick="addN('📱 Social AI','#8b5cf6')">+ Social</div>
         <div class="wbt" onclick="addN('🤖 Orchestrator','#b4ff50')">+ Orchestrator</div>
-        <div class="wbt" style="margin-left:auto;color:var(--red);border-color:rgba(255,51,102,0.2)" onclick="clearWB()">✕ Clear</div>
+        <div class="wbt clr" onclick="clearWB()">✕ Clear</div>
       </div>
-      <div class="wbc" id="wbC"><div class="wbe">Click agent types above to build your AI workflow pipeline</div></div>
-      <div class="wbfoot">
-        <button class="btn btn-acid" onclick="runWB()">▶ Run Pipeline</button>
+      <div style="margin-top:16px;display:flex;gap:10px">
+        <button class="btn btn-primary" onclick="runWB()">▶ Run Pipeline</button>
         <button class="btn btn-ghost" onclick="saveWB()">💾 Save</button>
-        <button class="btn btn-ghost" onclick="loadTpl()">📋 Load Template</button>
-        <span id="wbSt" style="font-size:12px;color:var(--muted);margin-left:4px"></span>
+        <button class="btn btn-ghost" onclick="loadTpl()">📋 Template</button>
       </div>
+      <span id="wbSt" style="font-size:12px;color:var(--muted);display:block;margin-top:8px"></span>
+    </div>
+    <div class="chapter-right">
+      <div class="wbc" id="wbC"><div class="wbe">Click agents above to build your pipeline</div></div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════ DEVELOPER PORTAL -->
-<section class="sp morph-section" id="developer">
-  <div class="con">
-    <div class="stag">🚀 For Builders</div>
-    <h2 class="stitle" style="margin-bottom:8px">Submit Your <em>AI Agent</em></h2>
-    <p class="sdesc" style="margin-bottom:48px">Join 840+ developers reaching 128K+ monthly users on AI Galaxy.</p>
-    <div class="dg">
+<!-- SECTION 6 — DEVELOPER -->
+<section class="full-screen chapter-section" id="developer">
+  <div class="section-glow glow-violet"></div>
+  <div class="chapter-split">
+    <div class="chapter-left">
+      <div class="chapter-tag">CHAPTER 6</div>
+      <h2 class="chapter-title">You Are<br><em>the Builder</em></h2>
+      <p class="chapter-desc">Join 840+ developers already reaching 128K+ monthly users. Free listing with full analytics.</p>
+      <div class="perks">
+        <div class="perk"><span class="perk-icon">📈</span><div><strong>128K+ Users</strong><p>Instant reach to developers and enterprises</p></div></div>
+        <div class="perk"><span class="perk-icon">🔬</span><div><strong>Live Playground</strong><p>40% higher adoption when users test first</p></div></div>
+        <div class="perk"><span class="perk-icon">📊</span><div><strong>Real-Time Analytics</strong><p>Usage metrics and conversion data — free</p></div></div>
+        <div class="perk"><span class="perk-icon">🤝</span><div><strong>MCP Ready</strong><p>Anthropic Model Context Protocol support</p></div></div>
+      </div>
+    </div>
+    <div class="chapter-right">
       <div class="fc">
         <h3>Publish Your Agent</h3>
-        <p>Free listing with analytics, playground testing, and user reviews.</p>
         <div class="fg"><label class="fl">Agent Name</label><input class="fi" placeholder="e.g. DeepResearch AI"/></div>
         <div class="fg"><label class="fl">Description</label><textarea class="fta" placeholder="What problem does your agent solve?"></textarea></div>
         <div class="fg"><label class="fl">Category</label>
-          <select class="fse">
-            <option>Writing AI</option><option>Coding AI</option><option>Research AI</option>
-            <option>Image Generation</option><option>Video Creation</option><option>Voice AI</option>
-            <option>Data Analysis</option><option>Business Automation</option><option>Security AI</option>
-          </select>
+          <select class="fse"><option>Writing AI</option><option>Coding AI</option><option>Research AI</option><option>Image Generation</option><option>Video Creation</option><option>Data Analysis</option></select>
         </div>
-        <div class="fg"><label class="fl">Demo URL</label><input class="fi" placeholder="https://your-agent.com/demo"/></div>
-        <div class="fg"><label class="fl">Pricing Model</label>
+        <div class="fg"><label class="fl">Demo URL</label><input class="fi" placeholder="https://your-agent.com"/></div>
+        <div class="fg"><label class="fl">Pricing</label>
           <select class="fse"><option>Free</option><option>Freemium</option><option>Paid</option><option>Usage-Based</option></select>
         </div>
-        <button class="fsub" onclick="submitDev()">🚀 Submit to AI Galaxy</button>
-      </div>
-      <div class="perks">
-        <div class="perk"><div class="pi">📈</div><div><h4>Instant Reach</h4><p>Get in front of 128,000+ developers, enterprises, and creators actively searching for AI tools.</p><div class="ps">128K+ users</div></div></div>
-        <div class="perk"><div class="pi">🔬</div><div><h4>Live Playground</h4><p>Users test your agent directly on AI Galaxy. 40% higher adoption when users test before buying.</p><div class="ps">40% ↑ adoption</div></div></div>
-        <div class="perk"><div class="pi">📊</div><div><h4>Real-Time Analytics</h4><p>Usage metrics, ratings, and conversion analytics — all free with your listing.</p><div class="ps">Real-time data</div></div></div>
-        <div class="perk"><div class="pi">🤝</div><div><h4>MCP Integration</h4><p>Support for Anthropic's Model Context Protocol — the standard agent interface for 2026.</p><div class="ps">MCP Ready</div></div></div>
+        <button class="btn btn-primary fsub" onclick="submitDev()">🚀 Submit to AI Galaxy</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════ FOOTER -->
+<!-- FOOTER -->
 <footer>
   <div class="con">
     <div class="ftop">
       <div class="fbrand">
-        <div class="logo"><div class="logo-mark">✦</div><span class="logo-text">AI GALAXY</span></div>
+        <div class="logo"><div class="logo-icon">🌌</div><span class="logo-text">AI<span class="logo-accent">Galaxy</span></span></div>
         <p>The universe's most complete AI agent discovery platform. Powered by live 2026 market data.</p>
         <div class="fsoc"><div class="sb2">𝕏</div><div class="sb2">in</div><div class="sb2">gh</div><div class="sb2">dc</div></div>
       </div>
-      <div class="fcol"><h5>Platform</h5><a>Marketplace</a><a>Playground</a><a>Comparison</a><a>Workflow Builder</a></div>
+      <div class="fcol"><h5>Platform</h5><a>Marketplace</a><a>Playground</a><a>Comparison</a><a>Workflows</a></div>
       <div class="fcol"><h5>Developers</h5><a>Submit Agent</a><a>API Docs</a><a>MCP Integration</a><a>Analytics</a></div>
-      <div class="fcol"><h5>Company</h5><a>About</a><a>2026 AI Report</a><a>Blog</a><a>Privacy</a><a>Terms</a></div>
+      <div class="fcol"><h5>Company</h5><a>About</a><a>2026 AI Report</a><a>Blog</a><a>Privacy</a></div>
     </div>
     <div class="fbot">
-      <span>© 2026 AI Galaxy Platform — All rights reserved</span>
+      <span>© 2026 AI Galaxy Platform</span>
       <span style="color:var(--acid)">✦ Explore the AI Universe</span>
     </div>
   </div>
 </footer>
 
-<!-- Toast + Modal -->
 <div class="tst" id="tst"></div>
-<div class="modw" id="agMod">
-  <div class="mod">
-    <button class="modx" onclick="closeM()">✕</button>
-    <div id="agModC"></div>
-  </div>
-</div>
+<div class="modw" id="agMod"><div class="mod"><button class="modx" onclick="closeM()">✕</button><div id="agModC"></div></div></div>
+<div style="display:none"><div id="tickerEl"></div></div>
 
-<!-- ── 3D Animated Background ── -->
+<!-- STARS BG -->
 <script>
 (function(){
-  const canvas = document.getElementById('bg-canvas');
-  const ctx = canvas.getContext('2d');
-  let W, H, particles = [], orbs = [];
-
-  function resize(){
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  // Create floating orbs (big colorful blobs)
-  const colors = ['rgba(180,255,80,', 'rgba(0,245,212,', 'rgba(139,92,246,', 'rgba(255,107,26,', 'rgba(255,51,102,'];
-  for(let i = 0; i < 6; i++){
-    orbs.push({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      r: 180 + Math.random() * 200,
-      color: colors[i % colors.length],
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.4,
-      phase: Math.random() * Math.PI * 2,
-      speed: 0.003 + Math.random() * 0.004
-    });
-  }
-
-  // Create star particles
-  for(let i = 0; i < 120; i++){
-    particles.push({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      r: Math.random() * 1.5,
-      alpha: Math.random(),
-      speed: 0.003 + Math.random() * 0.008,
-      phase: Math.random() * Math.PI * 2
-    });
-  }
-
-  let t = 0;
+  const canvas=document.getElementById('stars-canvas');
+  const ctx=canvas.getContext('2d');
+  let W,H,stars=[],orbs=[];
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize);
+  for(let i=0;i<200;i++) stars.push({x:Math.random(),y:Math.random(),r:Math.random()*1.4+0.3,alpha:Math.random()*0.7+0.3,phase:Math.random()*Math.PI*2,speed:0.005+Math.random()*0.01,r_:Math.random()*1.4+0.3});
+  const oc=['rgba(180,255,80,','rgba(0,245,212,','rgba(139,92,246,','rgba(255,107,26,','rgba(255,51,102,'];
+  for(let i=0;i<5;i++) orbs.push({x:Math.random(),y:Math.random(),r:180+Math.random()*220,c:oc[i],vx:(Math.random()-.5)*.0003,vy:(Math.random()-.5)*.0003,phase:Math.random()*Math.PI*2,sp:0.002+Math.random()*.003});
   function draw(){
-    ctx.clearRect(0, 0, W, H);
-
-    // Draw orbs
-    orbs.forEach(o => {
-      o.phase += o.speed;
-      o.x += o.vx + Math.sin(o.phase) * 0.3;
-      o.y += o.vy + Math.cos(o.phase * 0.7) * 0.3;
-      if(o.x < -o.r) o.x = W + o.r;
-      if(o.x > W + o.r) o.x = -o.r;
-      if(o.y < -o.r) o.y = H + o.r;
-      if(o.y > H + o.r) o.y = -o.r;
-
-      const grad = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.r);
-      grad.addColorStop(0, o.color + '0.08)');
-      grad.addColorStop(0.5, o.color + '0.04)');
-      grad.addColorStop(1, o.color + '0)');
-      ctx.beginPath();
-      ctx.arc(o.x, o.y, o.r, 0, Math.PI * 2);
-      ctx.fillStyle = grad;
-      ctx.fill();
+    ctx.clearRect(0,0,W,H);
+    orbs.forEach(o=>{
+      o.phase+=o.sp;o.x+=o.vx+Math.sin(o.phase)*.0002;o.y+=o.vy+Math.cos(o.phase*.7)*.0002;
+      if(o.x<0)o.x=1;if(o.x>1)o.x=0;if(o.y<0)o.y=1;if(o.y>1)o.y=0;
+      const cx=o.x*W,cy=o.y*H,g=ctx.createRadialGradient(cx,cy,0,cx,cy,o.r);
+      g.addColorStop(0,o.c+'0.08)');g.addColorStop(.5,o.c+'0.04)');g.addColorStop(1,o.c+'0)');
+      ctx.beginPath();ctx.arc(cx,cy,o.r,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
     });
-
-    // Draw stars
-    particles.forEach(p => {
-      p.phase += p.speed;
-      const alpha = (Math.sin(p.phase) * 0.5 + 0.5) * 0.6;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(180,255,80,${alpha})`;
-      ctx.fill();
+    stars.forEach(s=>{
+      s.phase+=s.speed;
+      const a=(Math.sin(s.phase)*.4+.6)*s.alpha;
+      ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r_,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,255,255,${a*0.7})`;ctx.fill();
     });
-
-    // Draw connecting lines between nearby particles
-    for(let i = 0; i < particles.length; i++){
-      for(let j = i+1; j < particles.length; j++){
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const dist = Math.sqrt(dx*dx + dy*dy);
-        if(dist < 120){
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(180,255,80,${0.04 * (1 - dist/120)})`;
-          ctx.lineWidth = 0.5;
-          ctx.stroke();
-        }
-      }
-    }
-
-    t++;
     requestAnimationFrame(draw);
   }
   draw();
 })();
 </script>
 
-<!-- ── Card hover glow effect ── -->
+<!-- SCROLL + CURSOR -->
 <script>
-document.addEventListener('mousemove', function(e){
-  document.querySelectorAll('.ac').forEach(card => {
-    const rect = card.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    card.style.setProperty('--mx', x + '%');
-    card.style.setProperty('--my', y + '%');
-  });
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in-view');}),{threshold:0.12});
+document.querySelectorAll('.chapter-section').forEach(s=>obs.observe(s));
+window.addEventListener('scroll',()=>document.getElementById('mainNav').classList.toggle('scrolled',window.scrollY>60));
+document.addEventListener('mousemove',e=>{
+  document.getElementById('cd').style.cssText=`left:${e.clientX}px;top:${e.clientY}px`;
+  setTimeout(()=>{document.getElementById('cr').style.cssText=`left:${e.clientX}px;top:${e.clientY}px`;},80);
 });
 </script>
 
-<!-- ── Morph scroll observer ── -->
-<script>
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if(entry.isIntersecting){
-      entry.target.classList.add('visible');
-    }
-  });
-}, { threshold: 0.1 });
-
-document.querySelectorAll('.morph-section').forEach(el => observer.observe(el));
-</script>
-
-<!-- ── Scripts (order matters: data → api → ui) ── -->
 <script src="js/data.js"></script>
 <script src="js/api.js"></script>
 <script src="js/ui.js"></script>
-
 </body>
 </html>
