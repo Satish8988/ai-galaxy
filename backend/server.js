@@ -23,7 +23,7 @@ app.post('/api/claude/chat', async (req, res) => {
         'Authorization': `Bearer ${process.env.ANTHROPIC_API_KEY}`,
       },
       body: JSON.stringify({
-        model   : 'google/gemma-3-4b-it:free',
+        model   : 'google/gemma-3n-e4b-it:free',
         messages: [{ role:'system', content: system }, ...messages],
         max_tokens,
       }),
@@ -53,7 +53,7 @@ app.post('/api/claude/stream', async (req, res) => {
         'Authorization': `Bearer ${process.env.ANTHROPIC_API_KEY}`,
       },
       body: JSON.stringify({
-        model   : 'google/gemma-3-4b-it:free',
+        model   : 'google/gemma-3n-e4b-it:free',
         messages: [{ role:'system', content: system }, ...messages],
         max_tokens,
         stream  : true,
