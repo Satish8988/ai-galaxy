@@ -1,6 +1,6 @@
 // ─── api.js  –  All Claude calls go through YOUR backend (never direct) ───────
 
-const API_BASE = 'http://localhost:3001'; // ← change if you deploy backend elsewhere
+const API_BASE = 'https://ai-galaxy.onrender.com'; // ← change if you deploy backend elsewhere
 
 // ── Shared markdown renderer ──────────────────────────────────────────────────
 function renderMd(text) {
