@@ -14,6 +14,10 @@ app.get('/api/health', (_req, res) => {
 });
 
 async function callAI(system, messages, max_tokens) {
+  const allMessages = [
+    { role: 'user', content: `${system}\n\n${messages[0].content}` },
+    ...messages.slice(1)
+  ];
   const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method : 'POST',
     headers: {
@@ -24,7 +28,7 @@ async function callAI(system, messages, max_tokens) {
     },
     body: JSON.stringify({
       model   : 'google/gemma-3n-e4b-it:free',
-      messages: [{ role:'system', content: system }, ...messages],
+      messages: allMessages,
       max_tokens,
     }),
   });
