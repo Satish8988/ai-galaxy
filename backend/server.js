@@ -6,7 +6,7 @@ require('dotenv').config();
 const app  = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors({ origin: process.env.FRONTEND_ORIGIN || 'https://satish8988.github.io' }));
+app.use(cors({ origin: '*' }));
 app.use(express.json());
 
 app.get('/api/health', (_req, res) => {
@@ -29,8 +29,10 @@ app.post('/api/claude/chat', async (req, res) => {
       }),
     });
     const data = await r.json();
+    console.log('chat response:', JSON.stringify(data).slice(0,200));
     res.json({ text: data.choices?.[0]?.message?.content || '' });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -58,9 +60,8 @@ app.post('/api/claude/stream', async (req, res) => {
       }),
     });
 
-    const reader  = r.body;
     const decoder = new (require('string_decoder').StringDecoder)('utf8');
-    reader.on('data', chunk => {
+    r.body.on('data', chunk => {
       const lines = decoder.write(chunk).split('\n');
       for (const line of lines) {
         if (!line.startsWith('data: ')) continue;
@@ -73,8 +74,8 @@ app.post('/api/claude/stream', async (req, res) => {
         } catch (_) {}
       }
     });
-    reader.on('end',   () => res.end());
-    reader.on('error', () => res.end());
+    r.body.on('end',   () => res.end());
+    r.body.on('error', () => res.end());
   } catch (err) {
     res.write(`data: ${JSON.stringify({ error: err.message })}\n\n`);
     res.end();
