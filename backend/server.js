@@ -23,7 +23,7 @@ app.post('/api/claude/chat', async (req, res) => {
         'Authorization': `Bearer ${process.env.ANTHROPIC_API_KEY}`,
       },
       body: JSON.stringify({
-        model   : 'meta-llama/llama-3.1-8b-instruct:free',
+        model   : 'google/gemma-3-4b-it:free',
         messages: [{ role:'system', content: system }, ...messages],
         max_tokens,
       }),
@@ -51,7 +51,7 @@ app.post('/api/claude/stream', async (req, res) => {
         'Authorization': `Bearer ${process.env.ANTHROPIC_API_KEY}`,
       },
       body: JSON.stringify({
-        model   : 'meta-llama/llama-3.1-8b-instruct:free',
+        model   : 'google/gemma-3-4b-it:free',
         messages: [{ role:'system', content: system }, ...messages],
         max_tokens,
         stream  : true,
