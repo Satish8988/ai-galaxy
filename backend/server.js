@@ -10,7 +10,7 @@ app.use(cors({ origin: '*' }));
 app.use(express.json());
 
 app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok' });
+  res.json({ status: 'ok', hasKey: !!process.env.ANTHROPIC_API_KEY });
 });
 
 app.post('/api/claude/chat', async (req, res) => {
@@ -29,8 +29,9 @@ app.post('/api/claude/chat', async (req, res) => {
       }),
     });
     const data = await r.json();
-    console.log('chat response:', JSON.stringify(data).slice(0,200));
-    res.json({ text: data.choices?.[0]?.message?.content || '' });
+    console.log('API response:', JSON.stringify(data).slice(0,300));
+    const text = data.choices?.[0]?.message?.content || '';
+    res.json({ text });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.message });
