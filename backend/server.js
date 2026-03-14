@@ -27,7 +27,7 @@ async function callAI(system, messages, max_tokens) {
       'X-Title'       : 'AI Galaxy',
     },
     body: JSON.stringify({
-      model   : 'mistralai/mistral-small-3.1-24b-instruct:free',
+      model   : 'qwen/qwen2.5-vl-3b-instruct:free',
       messages: allMessages,
       max_tokens,
     }),
