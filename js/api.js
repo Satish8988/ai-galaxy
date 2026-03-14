@@ -78,7 +78,11 @@ Reply ONLY in this exact JSON (no markdown fences):
 
   try {
     const raw    = await apiChat(system, q, 1000);
-    const result = JSON.parse(raw.replace(/```json|```/g,'').trim());
+    // Extract JSON from response robustly
+    let jsonStr = raw.replace(/```json|```/g,'').trim();
+    const jsonMatch = jsonStr.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('No valid response from AI. Please try again.');
+    const result = JSON.parse(jsonMatch[0]);
 
     loading.style.display = 'none';
     content.style.display = 'block';
