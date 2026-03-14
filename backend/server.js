@@ -40,7 +40,12 @@ async function callAI(system, messages, max_tokens) {
 app.post('/api/claude/chat', async (req, res) => {
   const { system, messages, max_tokens = 1000 } = req.body;
   try {
-    const text = await callAI(system, messages, max_tokens);
+    let text = await callAI(system, messages, max_tokens);
+    // If response looks like it should be JSON but isn't, retry with stronger prompt
+    if (system && system.includes('JSON') && !text.includes('{')) {
+      const strongSystem = system + '\n\nYOU MUST RESPOND WITH ONLY A JSON OBJECT. START YOUR RESPONSE WITH { AND END WITH }. NO OTHER TEXT.';
+      text = await callAI(strongSystem, messages, max_tokens);
+    }
     res.json({ text });
   } catch (err) {
     console.error(err);
