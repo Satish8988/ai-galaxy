@@ -167,35 +167,193 @@
 <!-- SECTION 4 — COMPARE -->
 <section class="full-screen chapter-section" id="compare">
   <div class="section-glow glow-cyan"></div>
-  <div class="chapter-full">
+  <div class="chapter-full" style="max-width:1200px;width:100%">
     <div class="chapter-tag center-text">CHAPTER 4</div>
     <h2 class="chapter-title center-text">Agent <em>Comparison</em></h2>
-    <div style="overflow-x:auto;margin-top:36px">
-      <table class="ctbl">
-        <thead>
-          <tr>
-            <th style="width:140px;text-align:left">Capability</th>
-            <th><div class="acol"><span class="em">🤖</span><span class="nm">ChatGPT</span></div></th>
-            <th><div class="acol"><span class="em">🧿</span><span class="nm">Claude 4</span></div></th>
-            <th><div class="acol"><span class="em">💎</span><span class="nm">Gemini 2</span></div></th>
-            <th><div class="acol"><span class="em">🐙</span><span class="nm">Copilot</span></div></th>
-            <th><div class="acol"><span class="em">🔍</span><span class="nm">Perplexity</span></div></th>
-            <th><div class="acol"><span class="em">⚡</span><span class="nm">AutoGPT</span></div></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Text &amp; Writing</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="part">Limited</span></td><td><span class="yes">✓</span></td></tr>
-          <tr><td>Code Generation</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td></tr>
-          <tr><td>Image Generation</td><td><span class="part">DALL-E 3</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td></tr>
-          <tr><td>Web Browsing</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
-          <tr><td>Context Window</td><td><span class="part">128K</span></td><td><span class="yes">200K</span></td><td><span class="yes">1M</span></td><td><span class="part">128K</span></td><td><span class="part">32K</span></td><td><span class="part">32K</span></td></tr>
-          <tr><td>Free Tier</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
-          <tr><td>MCP Support</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="part">Partial</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td></tr>
-        </tbody>
-      </table>
+    <p style="text-align:center;font-size:14px;color:var(--muted);margin-bottom:48px">Pick the right AI agent for your needs</p>
+
+    <!-- Filter buttons -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:36px">
+      <button onclick="filterCompare('all',this)" class="cmp-filter on" style="padding:8px 20px;border-radius:20px;border:1px solid var(--acid);background:var(--acid);color:#050508;font-size:12px;font-weight:800;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.2s">All Agents</button>
+      <button onclick="filterCompare('free',this)" class="cmp-filter" style="padding:8px 20px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;font-weight:800;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.2s">💚 Free Only</button>
+      <button onclick="filterCompare('code',this)" class="cmp-filter" style="padding:8px 20px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;font-weight:800;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.2s">💻 Best for Code</button>
+      <button onclick="filterCompare('image',this)" class="cmp-filter" style="padding:8px 20px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;font-weight:800;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.2s">🎨 Best for Images</button>
+      <button onclick="filterCompare('research',this)" class="cmp-filter" style="padding:8px 20px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;font-weight:800;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.2s">🔬 Best for Research</button>
+    </div>
+
+    <!-- Agent Cards Grid -->
+    <div id="compareGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+
+      <!-- ChatGPT -->
+      <div class="cmp-card" data-tags="free code research image" style="background:rgba(13,13,24,0.9);border:1px solid rgba(16,185,129,0.2);border-radius:16px;padding:24px;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,transparent)"></div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+          <div style="font-size:36px">🤖</div>
+          <div>
+            <div style="font-size:17px;font-weight:900;letter-spacing:-0.5px">ChatGPT</div>
+            <div style="font-size:11px;color:var(--muted);font-weight:600">by OpenAI</div>
+          </div>
+          <span style="margin-left:auto;font-size:10px;font-weight:800;padding:3px 10px;border-radius:4px;background:rgba(0,245,212,0.1);color:var(--cyan)">FREE</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">✍️ Text & Writing</span><span style="color:var(--acid);font-weight:800">✅ Yes</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">💻 Code Generation</span><span style="color:var(--acid);font-weight:800">✅ Yes</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">🎨 Image Generation</span><span style="color:var(--plasma);font-weight:800">DALL-E 3</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">🌐 Web Browsing</span><span style="color:var(--acid);font-weight:800">✅ Yes</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">📏 Context Window</span><span style="color:var(--cyan);font-weight:800">128K</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">🔌 MCP Support</span><span style="color:var(--acid);font-weight:800">✅ Yes</span></div>
+        </div>
+        <div style="padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.6">Most widely used AI assistant globally. Best all-rounder.</div>
+        <div style="margin-top:12px;display:flex;align-items:center;gap:6px"><span style="font-size:12px;color:var(--acid);font-weight:800">⭐ 4.9</span><span style="font-size:12px;color:var(--muted)">· 200M+ users</span></div>
+      </div>
+
+      <!-- Claude 4 -->
+      <div class="cmp-card" data-tags="free code research" style="background:rgba(13,13,24,0.9);border:1px solid rgba(180,255,80,0.3);border-radius:16px;padding:24px;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);position:relative;overflow:hidden;box-shadow:0 0 30px rgba(180,255,80,0.05)">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--acid),transparent)"></div>
+        <div style="position:absolute;top:14px;right:14px;font-size:9px;font-weight:800;background:var(--acid);color:#050508;padding:2px 8px;border-radius:3px">⭐ TOP PICK</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+          <div style="font-size:36px">🧿</div>
+          <div>
+            <div style="font-size:17px;font-weight:900;letter-spacing:-0.5px">Claude 4</div>
+            <div style="font-size:11px;color:var(--muted);font-weight:600">by Anthropic</div>
+          </div>
+          <span style="margin-left:auto;font-size:10px;font-weight:800;padding:3px 10px;border-radius:4px;background:rgba(0,245,212,0.1);color:var(--cyan)">FREE</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">✍️ Text & Writing</span><span style="color:var(--acid);font-weight:800">✅ Yes</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">💻 Code Generation</span><span style="color:var(--acid);font-weight:800">✅ Yes</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">🎨 Image Generation</span><span style="color:var(--red);font-weight:800">✗ No</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">🌐 Web Browsing</span><span style="color:var(--acid);font-weight:800">✅ Yes</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">📏 Context Window</span><span style="color:var(--acid);font-weight:800">200K</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">🔌 MCP Support</span><span style="color:var(--acid);font-weight:800">✅ Yes</span></div>
+        </div>
+        <div style="padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.6">Best for coding, safety and long documents. Top enterprise pick 2026.</div>
+        <div style="margin-top:12px;display:flex;align-items:center;gap:6px"><span style="font-size:12px;color:var(--acid);font-weight:800">⭐ 4.9</span><span style="font-size:12px;color:var(--muted)">· 40M+ users</span></div>
+      </div>
+
+      <!-- Gemini 2 -->
+      <div class="cmp-card" data-tags="free image research" style="background:rgba(13,13,24,0.9);border:1px solid rgba(0,245,212,0.2);border-radius:16px;padding:24px;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cyan),transparent)"></div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+          <div style="font-size:36px">💎</div>
+          <div>
+            <div style="font-size:17px;font-weight:900;letter-spacing:-0.5px">Gemini 2</div>
+            <div style="font-size:11px;color:var(--muted);font-weight:600">by Google</div>
+          </div>
+          <span style="margin-left:auto;font-size:10px;font-weight:800;padding:3px 10px;border-radius:4px;background:rgba(0,245,212,0.1);color:var(--cyan)">FREE</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">✍️ Text & Writing</span><span style="color:var(--acid);font-weight:800">✅ Yes</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">💻 Code Generation</span><span style="color:var(--acid);font-weight:800">✅ Yes</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">🎨 Image Generation</span><span style="color:var(--acid);font-weight:800">✅ Yes</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">🌐 Web Browsing</span><span style="color:var(--acid);font-weight:800">✅ Yes</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">📏 Context Window</span><span style="color:var(--acid);font-weight:800">1M 🏆</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">🔌 MCP Support</span><span style="color:var(--plasma);font-weight:800">Partial</span></div>
+        </div>
+        <div style="padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.6">Largest context window (1M tokens). Best for multimodal tasks.</div>
+        <div style="margin-top:12px;display:flex;align-items:center;gap:6px"><span style="font-size:12px;color:var(--acid);font-weight:800">⭐ 4.8</span><span style="font-size:12px;color:var(--muted)">· 60M+ users</span></div>
+      </div>
+
+      <!-- Copilot -->
+      <div class="cmp-card" data-tags="free code" style="background:rgba(13,13,24,0.9);border:1px solid rgba(139,92,246,0.2);border-radius:16px;padding:24px;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--violet),transparent)"></div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+          <div style="font-size:36px">🐙</div>
+          <div>
+            <div style="font-size:17px;font-weight:900;letter-spacing:-0.5px">Copilot</div>
+            <div style="font-size:11px;color:var(--muted);font-weight:600">by GitHub/Microsoft</div>
+          </div>
+          <span style="margin-left:auto;font-size:10px;font-weight:800;padding:3px 10px;border-radius:4px;background:rgba(0,245,212,0.1);color:var(--cyan)">FREE</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">✍️ Text & Writing</span><span style="color:var(--acid);font-weight:800">✅ Yes</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">💻 Code Generation</span><span style="color:var(--acid);font-weight:800">✅ Best</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">🎨 Image Generation</span><span style="color:var(--red);font-weight:800">✗ No</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">🌐 Web Browsing</span><span style="color:var(--acid);font-weight:800">✅ Yes</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">📏 Context Window</span><span style="color:var(--cyan);font-weight:800">128K</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">🔌 MCP Support</span><span style="color:var(--red);font-weight:800">✗ No</span></div>
+        </div>
+        <div style="padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.6">World's most deployed AI pair programmer. 30M+ developers use it daily.</div>
+        <div style="margin-top:12px;display:flex;align-items:center;gap:6px"><span style="font-size:12px;color:var(--acid);font-weight:800">⭐ 4.8</span><span style="font-size:12px;color:var(--muted)">· 30M+ users</span></div>
+      </div>
+
+      <!-- Perplexity -->
+      <div class="cmp-card" data-tags="free research" style="background:rgba(13,13,24,0.9);border:1px solid rgba(180,255,80,0.15);border-radius:16px;padding:24px;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--acid),transparent)"></div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+          <div style="font-size:36px">🔍</div>
+          <div>
+            <div style="font-size:17px;font-weight:900;letter-spacing:-0.5px">Perplexity</div>
+            <div style="font-size:11px;color:var(--muted);font-weight:600">by Perplexity AI</div>
+          </div>
+          <span style="margin-left:auto;font-size:10px;font-weight:800;padding:3px 10px;border-radius:4px;background:rgba(0,245,212,0.1);color:var(--cyan)">FREE</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">✍️ Text & Writing</span><span style="color:var(--plasma);font-weight:800">Limited</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">💻 Code Generation</span><span style="color:var(--red);font-weight:800">✗ No</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">🎨 Image Generation</span><span style="color:var(--red);font-weight:800">✗ No</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">🌐 Web Browsing</span><span style="color:var(--acid);font-weight:800">✅ Best</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">📏 Context Window</span><span style="color:var(--muted);font-weight:800">32K</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">🔌 MCP Support</span><span style="color:var(--red);font-weight:800">✗ No</span></div>
+        </div>
+        <div style="padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.6">Best AI research engine with real-time web search and auto-citations.</div>
+        <div style="margin-top:12px;display:flex;align-items:center;gap:6px"><span style="font-size:12px;color:var(--acid);font-weight:800">⭐ 4.7</span><span style="font-size:12px;color:var(--muted)">· 15M+ users</span></div>
+      </div>
+
+      <!-- AutoGPT -->
+      <div class="cmp-card" data-tags="free code" style="background:rgba(13,13,24,0.9);border:1px solid rgba(255,107,26,0.2);border-radius:16px;padding:24px;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--plasma),transparent)"></div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+          <div style="font-size:36px">⚡</div>
+          <div>
+            <div style="font-size:17px;font-weight:900;letter-spacing:-0.5px">AutoGPT</div>
+            <div style="font-size:11px;color:var(--muted);font-weight:600">Open Source</div>
+          </div>
+          <span style="margin-left:auto;font-size:10px;font-weight:800;padding:3px 10px;border-radius:4px;background:rgba(0,245,212,0.1);color:var(--cyan)">FREE</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">✍️ Text & Writing</span><span style="color:var(--acid);font-weight:800">✅ Yes</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">💻 Code Generation</span><span style="color:var(--acid);font-weight:800">✅ Yes</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">🎨 Image Generation</span><span style="color:var(--red);font-weight:800">✗ No</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">🌐 Web Browsing</span><span style="color:var(--acid);font-weight:800">✅ Yes</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">📏 Context Window</span><span style="color:var(--muted);font-weight:800">32K</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">🔌 MCP Support</span><span style="color:var(--acid);font-weight:800">✅ Yes</span></div>
+        </div>
+        <div style="padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.6">Fully autonomous agent. Handles complex tasks end-to-end without supervision.</div>
+        <div style="margin-top:12px;display:flex;align-items:center;gap:6px"><span style="font-size:12px;color:var(--acid);font-weight:800">⭐ 4.6</span><span style="font-size:12px;color:var(--muted)">· Open Source</span></div>
+      </div>
+
     </div>
   </div>
 </section>
+
+<style>
+.cmp-card:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 20px 60px rgba(0,0,0,0.5)!important}
+.cmp-filter.on{background:var(--acid)!important;color:#050508!important;border-color:var(--acid)!important}
+.cmp-card.hidden{display:none}
+</style>
+
+<script>
+function filterCompare(filter, btn) {
+  document.querySelectorAll('.cmp-filter').forEach(b => {
+    b.classList.remove('on');
+    b.style.background = 'transparent';
+    b.style.color = 'var(--muted)';
+    b.style.borderColor = 'var(--border)';
+  });
+  btn.classList.add('on');
+  btn.style.background = 'var(--acid)';
+  btn.style.color = '#050508';
+  btn.style.borderColor = 'var(--acid)';
+  document.querySelectorAll('.cmp-card').forEach(card => {
+    if (filter === 'all' || card.dataset.tags.includes(filter)) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+}
+</script>
 
 <!-- SECTION 5 — WORKFLOW -->
 <section class="full-screen chapter-section" id="workflow">
