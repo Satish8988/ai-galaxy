@@ -232,31 +232,47 @@
 <!-- SECTION 6 — DEVELOPER -->
 <section class="full-screen chapter-section" id="developer">
   <div class="section-glow glow-violet"></div>
-  <div class="chapter-split">
-    <div class="chapter-left">
-      <div class="chapter-tag">CHAPTER 6</div>
-      <h2 class="chapter-title">You Are<br><em>the Builder</em></h2>
-      <p class="chapter-desc">Join 840+ developers already reaching 128K+ monthly users. Free listing with full analytics.</p>
-      <div class="perks">
-        <div class="perk"><span class="perk-icon">📈</span><div><strong>128K+ Users</strong><p>Instant reach to developers and enterprises</p></div></div>
-        <div class="perk"><span class="perk-icon">🔬</span><div><strong>Live Playground</strong><p>40% higher adoption when users test first</p></div></div>
-        <div class="perk"><span class="perk-icon">📊</span><div><strong>Real-Time Analytics</strong><p>Usage metrics and conversion data — free</p></div></div>
-        <div class="perk"><span class="perk-icon">🤝</span><div><strong>MCP Ready</strong><p>Anthropic Model Context Protocol support</p></div></div>
+  <div class="chapter-full" style="max-width:1100px;width:100%">
+    <div class="chapter-tag">CHAPTER 6</div>
+    <h2 class="chapter-title">Developer <em>Portal</em></h2>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:28px">Submit, manage and publish your AI agents to 128K+ monthly users.</p>
+    <div style="display:flex;gap:0;background:rgba(5,5,8,0.8);border:1px solid var(--border);border-radius:10px;padding:4px;margin-bottom:32px;max-width:420px">
+      <div class="dev-tab on" data-tab="submit" onclick="switchDevTab('submit')" style="flex:1;padding:10px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;border-radius:7px;transition:all 0.2s;color:#050508;background:var(--acid)">📝 Submit Agent</div>
+      <div class="dev-tab" data-tab="dashboard" onclick="switchDevTab('dashboard')" style="flex:1;padding:10px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;border-radius:7px;transition:all 0.2s;color:var(--muted)">📋 My Dashboard</div>
+    </div>
+    <div id="devPanel-submit" class="dev-panel">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start">
+        <div class="fc">
+          <h3>Publish Your Agent</h3>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Fill details — verify everything before going live.</p>
+          <div class="fg"><label class="fl">Agent Name</label><input class="fi" placeholder="e.g. DeepResearch AI"/></div>
+          <div class="fg"><label class="fl">Description</label><textarea class="fta" placeholder="What problem does your agent solve?"></textarea></div>
+          <div class="fg"><label class="fl">Category</label>
+            <select class="fse"><option>Writing AI</option><option>Coding AI</option><option>Research AI</option><option>Image Generation</option><option>Video Creation</option><option>Voice AI</option><option>Data Analysis</option><option>Business Automation</option><option>Security AI</option><option>Enterprise AI</option></select>
+          </div>
+          <div class="fg"><label class="fl">Demo URL</label><input class="fi" placeholder="https://your-agent.com/demo"/></div>
+          <div class="fg"><label class="fl">Pricing</label>
+            <select class="fse"><option>Free</option><option>Freemium</option><option>Paid</option><option>Usage-Based</option></select>
+          </div>
+          <button class="btn btn-primary fsub" style="width:100%;padding:13px;margin-top:4px" onclick="submitDev()">✅ Verify &amp; Submit →</button>
+        </div>
+        <div class="perks">
+          <div class="perk"><span class="perk-icon">✅</span><div><strong>Verification First</strong><p>Every agent goes through quality checks before publishing.</p></div></div>
+          <div class="perk"><span class="perk-icon">📋</span><div><strong>Developer Dashboard</strong><p>Inspect, edit and manage all your agents from one place.</p></div></div>
+          <div class="perk"><span class="perk-icon">📈</span><div><strong>128K+ Users</strong><p>Instant reach to developers and enterprises worldwide.</p></div></div>
+          <div class="perk"><span class="perk-icon">🤝</span><div><strong>MCP Ready</strong><p>Full Anthropic Model Context Protocol support.</p></div></div>
+        </div>
       </div>
     </div>
-    <div class="chapter-right">
-      <div class="fc">
-        <h3>Publish Your Agent</h3>
-        <div class="fg"><label class="fl">Agent Name</label><input class="fi" placeholder="e.g. DeepResearch AI"/></div>
-        <div class="fg"><label class="fl">Description</label><textarea class="fta" placeholder="What problem does your agent solve?"></textarea></div>
-        <div class="fg"><label class="fl">Category</label>
-          <select class="fse"><option>Writing AI</option><option>Coding AI</option><option>Research AI</option><option>Image Generation</option><option>Video Creation</option><option>Data Analysis</option></select>
+    <div id="devPanel-dashboard" class="dev-panel" style="display:none">
+      <div id="devStats"></div>
+      <div id="devAgentList">
+        <div style="text-align:center;padding:40px 20px;color:var(--muted)">
+          <div style="font-size:48px;margin-bottom:12px">📭</div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:6px;color:var(--text)">No agents submitted yet</div>
+          <div style="font-size:13px">Submit your first agent using the form</div>
+          <button onclick="switchDevTab('submit')" style="margin-top:16px;padding:10px 24px;border-radius:8px;background:var(--acid);color:#050508;font-size:13px;font-weight:800;border:none;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif">📝 Submit Your First Agent</button>
         </div>
-        <div class="fg"><label class="fl">Demo URL</label><input class="fi" placeholder="https://your-agent.com"/></div>
-        <div class="fg"><label class="fl">Pricing</label>
-          <select class="fse"><option>Free</option><option>Freemium</option><option>Paid</option><option>Usage-Based</option></select>
-        </div>
-        <button class="btn btn-primary fsub" onclick="submitDev()">🚀 Submit to AI Galaxy</button>
       </div>
     </div>
   </div>
