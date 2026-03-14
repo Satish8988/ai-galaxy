@@ -67,14 +67,10 @@ async function runWF() {
   loading.style.display = 'block';
   content.style.display = 'none';
 
-  const system = `You are the AI Galaxy search engine. The user describes a goal.
-Recommend 3-5 agents from this catalog and explain in 2-3 sentences how they work together.
-
-CATALOG:
-${AGENT_CATALOG}
-
-Reply ONLY in this exact JSON (no markdown fences):
-{"agents":[{"id":1,"name":"Name","reason":"one line why"}],"summary":"2-3 sentence explanation"}`;
+  const system = `You are an AI agent recommender. Reply ONLY with valid JSON, nothing else, no explanation, no markdown.
+Format: {"agents":[{"id":1,"name":"ChatGPT","reason":"good for writing"}],"summary":"brief explanation"}
+Pick 3 agents from: ChatGPT(id:1), Claude Sonnet 4(id:2), Gemini 2.0(id:3), GitHub Copilot(id:4), Midjourney(id:5), Sora 2(id:6), ElevenLabs(id:7), Perplexity(id:8), Simplai(id:10), Devin 2.0(id:11), Julius AI(id:13), CrewAI(id:14), Gumloop(id:15), SentinelAI(id:18).
+Only output the JSON object.`;
 
   try {
     const raw    = await apiChat(system, q, 1000);
